@@ -1562,6 +1562,15 @@
 .v5 .mric-radar-wrap canvas{max-width:420px;width:100%}
 .v5 .mric-results-full{display:flex;flex-direction:column;gap:14px;margin-top:32px}
 @container (min-width:900px){.v5 .mric-results-full{margin-top:48px}}
+/* Blur-gate */
+.v5 .mric-lockzone{position:relative}
+.v5 .mric-locked{display:flex;flex-direction:column;gap:14px;transition:filter .55s ease,opacity .55s ease}
+.v5 .mric-lockzone:not(.mric-unlocked) .mric-locked{filter:blur(7px);opacity:.55;pointer-events:none;user-select:none}
+.v5 .mric-gate-overlay{position:absolute;inset:0;z-index:5;display:flex;justify-content:center;align-items:flex-start;padding:20px 0}
+.v5 .mric-gate-overlay::before{content:"";position:absolute;inset:0;background:linear-gradient(180deg,var(--bg) 0%,rgba(10,14,24,0.82) 26%,rgba(10,14,24,0.32) 58%,transparent 100%);pointer-events:none}
+.v5[data-theme="light"] .mric-gate-overlay::before{background:linear-gradient(180deg,var(--bg) 0%,rgba(250,250,247,0.92) 26%,rgba(250,250,247,0.45) 58%,transparent 100%)}
+.v5 .mric-gate-overlay .mric-cta-lm{position:relative;z-index:1;width:100%;max-width:560px}
+.v5 .mric-lockzone.mric-unlocked .mric-gate-overlay{display:none}
 </style>
 
 
@@ -1755,23 +1764,6 @@
               <div class="mric-radar-wrap"><canvas id="mric-radar" height="340"></canvas></div>
             </div>
 
-            <!-- DÉTAIL PILIERS -->
-            <div class="qblock mric-anim">
-              <div class="mric-pillars" id="mric-pillars"></div>
-            </div>
-
-            <!-- FORCES / FAIBLESSES -->
-            <div class="mric-ff mric-anim">
-              <div class="mric-ff-card">
-                <div class="mric-ff-title">✅ Vos forces</div>
-                <div id="mric-forces"></div>
-              </div>
-              <div class="mric-ff-card">
-                <div class="mric-ff-title">⚠️ À renforcer</div>
-                <div id="mric-faiblesses"></div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
@@ -1779,40 +1771,61 @@
       <!-- ===== PLEINE LARGEUR : plan + partage + guides + autres calculateurs ===== -->
       <div class="mric-results-full" id="mric-results-full">
 
-            <!-- PLAN -->
-            <div class="qblock mric-anim">
-              <div class="mric-chart-header" style="margin-bottom:16px"><span class="mric-chart-title">Votre plan d'amélioration prioritaire</span></div>
-              <div class="mric-plan" id="mric-plan"></div>
+            <!-- Confirmation (révélée après saisie de l'email) -->
+            <div class="mric-gate-success" id="mric-gate-success">
+              <div class="mric-gate-success-icon">✓</div>
+              <div>C'est débloqué&nbsp;! Votre plan détaillé arrive aussi sur <strong><span id="mric-gate-success-email">votre boîte mail</span></strong> d'ici 1 à 2 minutes. Pensez à vérifier vos spams.</div>
             </div>
 
-            <!-- ===== LEAD MAGNET : plan d'amélioration du score par email ===== -->
-            <div class="mric-cta-lm mric-anim" id="mric-cta-lm">
-              <div class="mric-gate-card mric-gate-inline" id="mric-gate-card">
-                <span class="mric-gate-eyebrow">Plan personnalisé</span>
-                <h3>Recevez votre <em>plan pour faire grimper votre score</em></h3>
-                <p>Votre feuille de route sur-mesure pour passer de <strong id="mric-cta-score">votre score actuel</strong> au palier supérieur&nbsp;: vos leviers prioritaires pilier par pilier, des actions concrètes et chiffrées, et votre trajectoire. Généré pour votre situation, envoyé par email.</p>
+            <!-- LOCKZONE : détail flouté tant que l'email n'est pas saisi -->
+            <div class="mric-lockzone" id="mric-lockzone">
+              <div class="mric-locked" id="mric-locked">
 
-                <form class="mric-gate-form" id="mric-gate-form" novalidate>
-                  <input type="text" id="mric-gate-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
-                  <input type="email" id="mric-gate-email" placeholder="votre@email.fr" autocomplete="email" required>
-                  <p class="mric-gate-privacy">Données chiffrées et confidentielles, jamais cédées à des tiers.</p>
-                  <label class="mric-gate-consent" id="mric-gate-consent-label">
-                    <input type="checkbox" id="mric-gate-rgpd" required>
-                    <span>J'accepte de recevoir mon plan et la newsletter MoneyRadar. Désabonnement en 1 clic.</span>
-                  </label>
-                  <button type="submit" class="mric-gate-submit" id="mric-gate-submit">
-                    <span id="mric-gate-submit-label">Recevoir mon plan</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-                  </button>
-                  <p class="mric-gate-status" id="mric-gate-status"></p>
-                </form>
+                <!-- DÉTAIL PILIERS -->
+                <div class="qblock mric-anim">
+                  <div class="mric-pillars" id="mric-pillars"></div>
+                </div>
 
-                <p class="mric-gate-fine">Gratuit · Aucune publicité · Sans engagement</p>
+                <!-- FORCES / FAIBLESSES -->
+                <div class="mric-ff mric-anim">
+                  <div class="mric-ff-card"><div class="mric-ff-title">✅ Vos forces</div><div id="mric-forces"></div></div>
+                  <div class="mric-ff-card"><div class="mric-ff-title">⚠️ À renforcer</div><div id="mric-faiblesses"></div></div>
+                </div>
+
+                <!-- PLAN -->
+                <div class="qblock mric-anim">
+                  <div class="mric-chart-header" style="margin-bottom:16px"><span class="mric-chart-title">Votre plan d'amélioration prioritaire</span></div>
+                  <div class="mric-plan" id="mric-plan"></div>
+                </div>
+
               </div>
 
-              <div class="mric-gate-success" id="mric-gate-success">
-                <div class="mric-gate-success-icon">✓</div>
-                <div>Votre plan arrive sur <strong><span id="mric-gate-success-email">votre boîte mail</span></strong> d'ici 1 à 2 minutes. Pensez à vérifier vos spams.</div>
+              <!-- ===== LEAD MAGNET : gate par-dessus le contenu flouté ===== -->
+              <div class="mric-gate-overlay" id="mric-gate-overlay">
+                <div class="mric-cta-lm" id="mric-cta-lm">
+                  <div class="mric-gate-card mric-gate-inline" id="mric-gate-card">
+                    <span class="mric-gate-eyebrow">Analyse complète + plan</span>
+                    <h3>Débloquez le <em>détail de vos 8 piliers</em> et votre plan</h3>
+                    <p>Entrez votre email pour révéler votre analyse complète pilier par pilier, et recevoir votre <strong>plan d'amélioration personnalisé</strong> pour passer de <strong id="mric-cta-score">votre score actuel</strong> au palier supérieur&nbsp;: vos leviers prioritaires chiffrés, directement dans votre boîte mail.</p>
+
+                    <form class="mric-gate-form" id="mric-gate-form" novalidate>
+                      <input type="text" id="mric-gate-company" name="company" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0">
+                      <input type="email" id="mric-gate-email" placeholder="votre@email.fr" autocomplete="email" required>
+                      <p class="mric-gate-privacy">Données chiffrées et confidentielles, jamais cédées à des tiers.</p>
+                      <label class="mric-gate-consent" id="mric-gate-consent-label">
+                        <input type="checkbox" id="mric-gate-rgpd" required>
+                        <span>J'accepte de recevoir mon plan et la newsletter MoneyRadar. Désabonnement en 1 clic.</span>
+                      </label>
+                      <button type="submit" class="mric-gate-submit" id="mric-gate-submit">
+                        <span id="mric-gate-submit-label">Débloquer mon analyse</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+                      </button>
+                      <p class="mric-gate-status" id="mric-gate-status"></p>
+                    </form>
+
+                    <p class="mric-gate-fine">Gratuit · Aucune publicité · Sans engagement</p>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -2426,7 +2439,7 @@
   var ENDPOINT = window.MRIC_WORKER_ENDPOINT || DEFAULT_ENDPOINT;
 
   var form = document.getElementById('mric-gate-form');
-  var card = document.getElementById('mric-gate-card');
+  var lockzone = document.getElementById('mric-lockzone');
   var success = document.getElementById('mric-gate-success');
   var successEmail = document.getElementById('mric-gate-success-email');
   var emailEl = document.getElementById('mric-gate-email');
@@ -2440,7 +2453,7 @@
   function isValidEmail(s){return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(String(s||'').trim());}
   function setError(msg){status.textContent = msg || '';status.classList.remove('mric-status-loading');}
   function unlock(email){
-    if(card) card.style.display = 'none';
+    if(lockzone) lockzone.classList.add('mric-unlocked');
     successEmail.textContent = email;
     success.classList.add('mric-show');
     setTimeout(function(){success.scrollIntoView({behavior:'smooth',block:'center'});},150);

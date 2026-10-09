@@ -1,4 +1,4 @@
-<!-- Calculateur Score Financier v8 · design Claude Design (2c, 3a, 5a, 7b) · moteur v4 + corrections de fiabilité (fiabilite_v8.py) · MoneyRadar · 07/10/2026 -->
+<!-- Calculateur Score Financier v9 · v8 + recommandations chiffrées, sans valeurs d'exemple, prévoyance « je ne sais pas », moteur corrigé (audit du 09/10) · MoneyRadar · 09/10/2026 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 /* ===================================================
@@ -681,6 +681,24 @@
   .mric-calc.ux8 *{transition:none!important;animation:none!important}
 }
 
+
+/* ---------- v9 : recommandations chiffrées ---------- */
+.mric-calc.ux8 .mric-form input::placeholder{color:var(--fg-4);opacity:.55;font-weight:500}
+.mric-calc.ux8 .mric-traj{margin:0 0 14px;padding:12px 14px;border-radius:12px;background:rgba(0,245,192,.07);border:1px solid rgba(0,245,192,.22);font-size:14px;color:var(--fg-2,#D7DEEC)}
+.mric-calc.ux8 .mric-reco{margin:8px 0 10px;padding:12px 14px;border-radius:12px;background:rgba(255,255,255,.035);border:1px solid var(--line)}
+.mric-calc.ux8 .mric-reco-obj{font-size:14.5px;line-height:1.5;color:var(--fg)}
+.mric-calc.ux8 .mric-reco-k{display:block;margin-bottom:2px;font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase;color:var(--fg-4)}
+.mric-calc.ux8 .mric-reco-res{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:8px}
+.mric-calc.ux8 .mric-reco-gain{display:inline-flex;align-items:center;height:26px;padding:0 10px;border-radius:999px;background:var(--accent);color:var(--accent-ink);font-size:13px;font-weight:800}
+.mric-calc.ux8 .mric-reco-gain-0{background:rgba(255,255,255,.08);color:var(--fg-3);font-weight:650}
+.mric-calc.ux8 .mric-reco-lvl{font-size:13.5px;font-weight:750}
+.mric-calc.ux8 .mric-reco-delai{margin:8px 0 0;font-size:13px;line-height:1.5;color:var(--fg-3)}
+.mric-calc.ux8 .mric-levier{margin:26px 0 0;padding:20px 22px;border-radius:18px;border:1px solid rgba(0,245,192,.35);background:linear-gradient(135deg,rgba(0,245,192,.09),rgba(59,158,255,.05))}
+.mric-calc.ux8 .mric-levier-k{margin:0 0 8px;font-size:12px;font-weight:750;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.mric-calc.ux8 .mric-levier-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px}
+.mric-calc.ux8 .mric-levier-obj{flex:1 1 320px;font-size:18px;line-height:1.45;color:var(--fg)}
+.mric-calc.ux8 .mric-levier-row .mric-reco-res{margin-top:0}
+.mric-calc.ux8 .mric-levier-more{margin:10px 0 0;font-size:13px;color:var(--fg-4)}
 </style>
 
 <div class="mric-calc v7 ux8" data-share-url="https://moneyradar.org/simulateur-score-financier/">
@@ -735,13 +753,14 @@
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-age">Âge</label>
-                <div class="mric-val"><input type="text" id="mric-age" value="35" inputmode="numeric"><span>ans</span></div>
+                <div class="mric-val"><input type="text" id="mric-age" value="" placeholder="ex. 35" inputmode="numeric"><span>ans</span></div>
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-statut">Activité principale</label>
                 <select id="mric-statut">
+                  <option value="" selected disabled>Choisissez…</option>
                   <option value="fonctionnaire">Fonctionnaire</option>
-                  <option value="cdi" selected>CDI confirmé</option>
+                  <option value="cdi">CDI confirmé</option>
                   <option value="independant">Indépendant</option>
                   <option value="cdd">CDD, intérim, alternance</option>
                   <option value="retraite">Retraité(e)</option>
@@ -759,38 +778,38 @@
               <div class="sf-col">
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-revenu">Revenu net <small>après impôt · moyenne sur 12 mois si variable</small></label>
-                <div class="mric-val"><input type="text" id="mric-revenu" value="2500" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-revenu" value="" placeholder="ex. 2 500" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-depenses">Dépenses totales <small>logement et crédits compris</small></label>
-                <div class="mric-val"><input type="text" id="mric-depenses" value="2200" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-depenses" value="" placeholder="ex. 2 200" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row mric-sub">
                 <label class="mric-lbl" for="mric-logement">dont loyer ou prêt immo</label>
-                <div class="mric-val"><input type="text" id="mric-logement" value="800" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-logement" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row mric-sub mric-sub2">
                 <span class="mric-lbl"><label for="mric-capital-immo">dont capital remboursé</label> <button type="button" class="mric-info-btn" id="mric-info-capital" aria-label="Qu'est-ce que le capital remboursé et où le trouver ?"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg></button><small>si vous remboursez un prêt immobilier, sinon 0</small></span>
-                <div class="mric-val"><input type="text" id="mric-capital-immo" value="0" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-capital-immo" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-info-pop" id="mric-info-capital-pop" hidden>Votre mensualité de crédit se compose d'<b>intérêts</b>, d'<b>assurance</b> et d'une part de <b>capital</b>, celle qui rembourse réellement la somme empruntée. Cette part est une forme d'épargne&nbsp;: elle fait grandir votre patrimoine, et l'INSEE la compte dans le taux d'épargne des ménages.<br><b>Où la trouver</b>&nbsp;: dans votre tableau d'amortissement (colonne «&nbsp;capital amorti&nbsp;» ou «&nbsp;capital remboursé&nbsp;» du mois en cours), dans votre offre de prêt ou dans votre espace client bancaire.<br><b>Ordre de grandeur</b>&nbsp;: pour 200&nbsp;000&nbsp;€ empruntés sur 20 ans à 3,5&nbsp;%, la mensualité hors assurance est d'environ 1&nbsp;160&nbsp;€, dont environ 580&nbsp;€ de capital la première année, un peu plus chaque année ensuite.<br><b>Locataire, sans crédit immobilier ou si vous ne savez pas</b>&nbsp;: laissez 0, le score sera simplement un peu prudent. Ce montant ne peut pas dépasser votre loyer ou prêt immo.</div>
               <div class="mric-row mric-sub">
                 <label class="mric-lbl" for="mric-credits">dont autres crédits</label>
-                <div class="mric-val"><input type="text" id="mric-credits" value="200" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-credits" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row mric-sub mric-sub2">
                 <label class="mric-lbl" for="mric-conso">dont conso / renouvelable</label>
-                <div class="mric-val"><input type="text" id="mric-conso" value="0" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-conso" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
               </div>
               </div>
               <div class="sf-col">
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-epargne-mois">Épargne mise de côté <small>livrets, placements, hors capital immo</small></label>
-                <div class="mric-val"><input type="text" id="mric-epargne-mois" value="300" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-epargne-mois" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-complement">Part de revenus annexes <small>loyers, dividendes</small></label>
-                <div class="mric-val"><input type="text" id="mric-complement" value="0" inputmode="numeric"><span>%</span></div>
+                <div class="mric-val"><input type="text" id="mric-complement" value="" placeholder="0" inputmode="numeric"><span>%</span></div>
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-decouvert">À découvert en fin de mois</label>
@@ -809,22 +828,23 @@
             <div class="mric-grp">
               <h2 class="mric-grp-t"><span>03</span>Épargne et patrimoine</h2>
               <input type="hidden" id="mric-epargne-secu" value="0"><input type="hidden" id="mric-patrimoine" value="0"><div id="mric-allocbar" hidden></div>
-              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-cash">Comptes et livrets</label><div class="mric-val"><input type="text" id="mric-alloc-cash" value="6000" inputmode="numeric"><span>€</span></div></div>
-              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-oblig">Fonds euros <small>assurance vie, épargne garantie</small></label><div class="mric-val"><input type="text" id="mric-alloc-oblig" value="4000" inputmode="numeric"><span>€</span></div></div>
-              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-actions">Actions, ETF, obligations</label><div class="mric-val"><input type="text" id="mric-alloc-actions" value="5000" inputmode="numeric"><span>€</span></div></div>
-              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-immo">Immobilier <small>valeur moins crédit restant</small></label><div class="mric-val"><input type="text" id="mric-alloc-immo" value="40000" inputmode="numeric"><span>€</span></div></div>
-              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-autres">Autres placements <small>crypto, or, SCPI…</small></label><div class="mric-val"><input type="text" id="mric-alloc-autres" value="0" inputmode="numeric"><span>€</span></div></div>
-              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-biens">Véhicules, biens pro et autres <small>valeur moins crédit restant</small></label><div class="mric-val"><input type="text" id="mric-alloc-biens" value="8000" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-cash">Comptes et livrets</label><div class="mric-val"><input type="text" id="mric-alloc-cash" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-oblig">Fonds euros <small>assurance vie, épargne garantie</small></label><div class="mric-val"><input type="text" id="mric-alloc-oblig" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-actions">Actions, ETF, obligations</label><div class="mric-val"><input type="text" id="mric-alloc-actions" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-immo">Immobilier <small>valeur moins crédit restant</small></label><div class="mric-val"><input type="text" id="mric-alloc-immo" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-autres">Autres placements <small>crypto, or, SCPI…</small></label><div class="mric-val"><input type="text" id="mric-alloc-autres" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-alloc-biens">Véhicules, biens pro et autres <small>valeur moins crédit restant</small></label><div class="mric-val"><input type="text" id="mric-alloc-biens" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
               <div class="mric-alloc-total" id="mric-alloc-total"></div>
             </div>
 
             <div class="mric-grp">
               <h2 class="mric-grp-t"><span>04</span>Protections</h2>
               <label class="mric-row mric-switch"><span class="mric-lbl">Prévoyance <small>décès, invalidité, arrêt de travail, y compris employeur</small></span><input type="checkbox" id="mric-ass-prevoyance"></label>
-              <label class="mric-row mric-switch"><span class="mric-lbl">Mutuelle santé</span><input type="checkbox" id="mric-ass-sante" checked></label>
-              <label class="mric-row mric-switch"><span class="mric-lbl">Habitation et responsabilité civile</span><input type="checkbox" id="mric-ass-habitation" checked></label>
+              <label class="mric-row mric-switch mric-sub"><span class="mric-lbl">Je ne sais pas <small>mon employeur me couvre peut-être</small></span><input type="checkbox" id="mric-ass-prev-nsp"></label>
+              <label class="mric-row mric-switch"><span class="mric-lbl">Mutuelle santé</span><input type="checkbox" id="mric-ass-sante"></label>
+              <label class="mric-row mric-switch"><span class="mric-lbl">Habitation et responsabilité civile</span><input type="checkbox" id="mric-ass-habitation"></label>
               <label class="mric-row mric-switch"><span class="mric-lbl">Garantie des accidents de la vie <small>accidents domestiques et de loisirs</small></span><input type="checkbox" id="mric-ass-gav"></label>
-              <label class="mric-row mric-switch"><span class="mric-lbl">Assurance auto</span><input type="checkbox" id="mric-ass-auto" checked></label>
+              <label class="mric-row mric-switch"><span class="mric-lbl">Assurance auto</span><input type="checkbox" id="mric-ass-auto"></label>
               <label class="mric-row mric-switch mric-sub"><span class="mric-lbl">Je n'ai pas de véhicule</span><input type="checkbox" id="mric-ass-novehic"></label>
             </div>
           </div>
@@ -858,7 +878,7 @@
           <div class="sf-card-foot"><span>Et vous&nbsp;? Calculez le vôtre</span><b><img src="data:image/webp;base64,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" alt="" width="16" height="13">moneyradar.org</b></div>
           <canvas id="mric-radar" aria-hidden="true"></canvas>
         </div>
-        <p class="ux-example" id="ux-example">Aperçu basé sur les valeurs d’exemple. Renseignez votre situation pour obtenir votre score.</p>
+        <p class="ux-example" id="ux-example">Renseignez votre situation pour obtenir votre score.</p>
         <div class="ux-card-share" id="mric-card-share" aria-disabled="true"><div class="sf-view" role="group" aria-label="Contenu de la carte"><span class="sf-view-k">Ma carte</span><div class="sf-view-seg"><button type="button" data-v="full" aria-pressed="true">Avec le détail</button><button type="button" data-v="solo" aria-pressed="false">Score seul</button></div></div><button class="ux-card-btn" id="mric-card-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span>Partager ma carte</span></button><div class="sf-card-links"><button class="ux-card-dl" id="mric-card-dl" type="button">Télécharger l’image</button><a class="mric-to-detail" href="#mric-analyse">Mon plan d’action ↓</a></div><p class="ux-card-note" id="mric-card-note" aria-live="polite"></p></div>
         <div class="mric-share mric-anim mric-anim-d4" id="mric-share">
               <div class="mric-share-lbl">Ou le lien :</div>
@@ -901,6 +921,8 @@
   <section class="mric-analysis" id="mric-analyse">
     <div class="inn" id="mric-results-full">
       <p class="ux-eyebrow">LA SUITE POUR VOUS</p><h2 class="mric-h2">Un score, et surtout <span style="color:var(--accent)">un cap.</span></h2><p class="ux-section-intro">Comprenez vos 8 piliers et identifiez vos prochaines actions.</p>
+
+      <div class="mric-levier" id="mric-levier" hidden></div>
 
       <div class="mric-gate-success" id="mric-gate-success">
         <span class="mric-gate-success-icon">✓</span>
@@ -1000,12 +1022,12 @@
         <p class="btxt">Le score pondère plus fortement les <strong>leviers d'action</strong> (épargne, matelas de sécurité) que les éléments subis comme le patrimoine, qui dépend largement de l'âge.</p>
         <div class="mric-weights">
 <details class="mric-w"><summary><b>Épargne de sécurité</b><i>18&nbsp;%</i><div class="mric-w-bar"><span style="width:100%"></span></div></summary><p>Combien de mois de dépenses vos comptes, livrets et fonds euros couvrent. Repère&nbsp;: 3 à 6 mois. Un découvert fréquent en fin de mois réduit fortement cette note&nbsp;: l'épargne n'est alors pas disponible quand il le faudrait, et le score est plafonné au niveau Stable. Un découvert occasionnel réduit cette note d'un quart.</p></details>
-<details class="mric-w"><summary><b>Taux d'épargne</b><i>16&nbsp;%</i><div class="mric-w-bar"><span style="width:89%"></span></div></summary><p>La part de votre revenu mise de côté chaque mois, plus, si vous êtes propriétaire, le capital de votre prêt immobilier remboursé chaque mois&nbsp;: rembourser ce capital, c'est se constituer un patrimoine, et l'INSEE le compte aussi dans le taux d'épargne des ménages. Bon niveau&nbsp;: 15 à 20&nbsp;%. Le montant figure dans votre tableau d'amortissement (ligne «&nbsp;capital amorti&nbsp;» du mois, hors intérêts et assurance), dans votre offre de prêt ou votre espace client. Si vous ne le connaissez pas, laissez 0&nbsp;: le score sera simplement prudent. Ce capital ne compte pas dans l'épargne de sécurité, car il n'est pas disponible. Ce pilier n'est pas compté pour un retraité&nbsp;: on vit alors de ce qu'on a construit, et son poids est réparti sur les autres. Pendant les études, une recherche d'emploi, un congé parental, une invalidité ou si vous vivez de votre patrimoine, il ne compte que s'il fait monter votre score. Il en va de même, progressivement, de 60 à 67&nbsp;ans et quand vous puisez dans votre épargne à un rythme qui se rapproche du soutenable&nbsp;: un taux d'épargne bas ne vous pénalise alors pas.</p></details>
+<details class="mric-w"><summary><b>Taux d'épargne</b><i>16&nbsp;%</i><div class="mric-w-bar"><span style="width:89%"></span></div></summary><p>La part de votre revenu mise de côté chaque mois, plus, si vous êtes propriétaire, le capital de votre prêt immobilier remboursé chaque mois&nbsp;: rembourser ce capital, c'est se constituer un patrimoine, et l'INSEE le compte aussi dans le taux d'épargne des ménages. Bon niveau&nbsp;: 15 à 20&nbsp;%. Le montant figure dans votre tableau d'amortissement (ligne «&nbsp;capital amorti&nbsp;» du mois, hors intérêts et assurance), dans votre offre de prêt ou votre espace client. Si vous ne le connaissez pas, laissez 0&nbsp;: le score sera simplement prudent. Ce capital ne compte pas dans l'épargne de sécurité, car il n'est pas disponible. Ce pilier n'est pas compté pour un retraité&nbsp;: on vit alors de ce qu'on a construit, et son poids est réparti sur les autres. Pendant les études, une recherche d'emploi, un congé parental, une invalidité ou si vous vivez de votre patrimoine, il ne compte que s'il fait monter votre score. Il en va de même, progressivement, de 60 à 67&nbsp;ans, et, à partir de 60&nbsp;ans ou si vous vivez de votre patrimoine, quand vous puisez dans votre épargne à un rythme qui se rapproche du soutenable&nbsp;: un taux d'épargne bas ne vous pénalise alors pas. Avant 60&nbsp;ans, puiser dans son épargne ne neutralise pas ce pilier&nbsp;: gagner un peu plus ou dépenser un peu moins ne fait jamais baisser le score.</p></details>
 <details class="mric-w"><summary><b>Patrimoine net vs âge</b><i>15&nbsp;%</i><div class="mric-w-bar"><span style="width:83%"></span></div></summary><p>Votre rang parmi les ménages de votre âge, patrimoine net comme le mesure l'INSEE&nbsp;: immobilier, épargne et placements, mais aussi véhicules, équipement et biens professionnels, moins les crédits immobiliers et ceux liés à un bien. Repère&nbsp;: INSEE, enquête Histoire de vie et Patrimoine 2020-2021, dernière série publiée par âge en patrimoine net, actualisée par MoneyRadar à début 2024 avec l'évolution du patrimoine brut de chaque tranche d'âge publiée par l'INSEE (Insee Focus n° 371). Le rang est une estimation.</p></details>
 <details class="mric-w"><summary><b>Taux d'endettement</b><i>14&nbsp;%</i><div class="mric-w-bar"><span style="width:78%"></span></div></summary><p>Vos mensualités de crédit hors résidence principale (auto, travaux, immobilier locatif, crédit conso) rapportées au revenu. Le crédit de votre logement est compté une seule fois, dans le pilier suivant. Le crédit conso/renouvelable est compté <strong>×1,8</strong> car c'est la dette la plus coûteuse et la plus risquée.</p></details>
 <details class="mric-w"><summary><b>Poids du logement</b><i>12&nbsp;%</i><div class="mric-w-bar"><span style="width:67%"></span></div></summary><p>Votre loyer ou la mensualité du crédit de votre résidence principale rapporté au revenu (taux d'effort). Locataire ou propriétaire, la même règle s'applique. Seuil de confort&nbsp;: ≤ 33&nbsp;%.</p></details>
 <details class="mric-w"><summary><b>Assurances</b><i>10&nbsp;%</i><div class="mric-w-bar"><span style="width:56%"></span></div></summary><p>Votre couverture contre les risques graves. Pondéré vers la <strong>prévoyance</strong>, la protection la plus souvent oubliée (la santé et l'habitation étant souvent automatiques ou obligatoires). Pensez à vérifier le contrat collectif de votre employeur. La garantie des accidents de la vie compte peu, mais elle couvre un trou que la mutuelle et l'habitation laissent ouvert. La prévoyance n'est notée que si vos revenus viennent de votre travail&nbsp;: elle ne l'est pas pour un retraité, un étudiant, une personne sans emploi, en invalidité ou qui vit de son patrimoine.</p></details>
-<details class="mric-w"><summary><b>Diversification</b><i>8&nbsp;%</i><div class="mric-w-bar"><span style="width:44%"></span></div></summary><p>Le nombre de classes d'actifs et l'équilibre entre elles. Ce pilier ne compte qu'à partir de 10&nbsp;000&nbsp;€ de placements et d'immobilier (véhicules et biens d'usage exclus)&nbsp;: en dessous, son poids est réparti sur les autres. Une classe de placement compte à partir de 1&nbsp;000&nbsp;€ et de 5&nbsp;% de vos placements financiers, l'immobilier dès qu'il dépasse 5&nbsp;% du total. L'immobilier, le plus souvent votre résidence principale, n'est pas compté comme une concentration, et les véhicules, biens professionnels ou biens d'usage ne comptent pas comme un placement.</p></details>
+<details class="mric-w"><summary><b>Diversification</b><i>8&nbsp;%</i><div class="mric-w-bar"><span style="width:44%"></span></div></summary><p>Le nombre de classes d'actifs et l'équilibre entre elles. Ce pilier compte à partir de 10&nbsp;000&nbsp;€ de placements et d'immobilier (véhicules et biens d'usage exclus), et son poids monte progressivement jusqu'à 20&nbsp;000&nbsp;€&nbsp;: en dessous, il est réparti sur les autres. Une classe de placement compte pleinement à partir de 1&nbsp;000&nbsp;€ et de 5&nbsp;% de vos placements financiers, en partie en dessous, et l'immobilier à partir de 5&nbsp;% du total&nbsp;: ajouter de l'argent ne fait jamais tomber une classe d'un coup. L'immobilier, le plus souvent votre résidence principale, n'est pas compté comme une concentration, et les véhicules, biens professionnels ou biens d'usage ne comptent pas comme un placement.</p></details>
 <details class="mric-w"><summary><b>Sécurité du revenu</b><i>7&nbsp;%</i><div class="mric-w-bar"><span style="width:39%"></span></div></summary><p>La stabilité de votre source de revenu principale, complétée par vos revenus annexes.</p></details>
         </div>
         <details class="mric-more">
@@ -1033,7 +1055,7 @@
               <li><strong>Taux d'endettement (14&nbsp;%)</strong>&nbsp;: mensualités de crédit hors résidence principale, le crédit conso ou renouvelable compté 1,8 fois, divisées par votre revenu. 0&nbsp;% → 100 · 5&nbsp;% → 92 · 10&nbsp;% → 80 · 15&nbsp;% → 65 · 20&nbsp;% → 50 · 25&nbsp;% → 35 · 30&nbsp;% → 20 · 40&nbsp;% ou plus → 0. Sans revenu&nbsp;: 100 sans crédit, 0 avec.</li>
               <li><strong>Poids du logement (12&nbsp;%)</strong>&nbsp;: loyer ou mensualité de crédit de la résidence principale, divisé par votre revenu. Jusqu'à 20&nbsp;% → 100 · 25&nbsp;% → 90 · 30&nbsp;% → 75 · 35&nbsp;% → 55 · 40&nbsp;% → 35 · 50&nbsp;% → 10 · 60&nbsp;% ou plus → 0. Sans revenu&nbsp;: 100 sans logement à payer, 0 sinon.</li>
               <li><strong>Assurances (10&nbsp;%)</strong>&nbsp;: part des protections détenues, pondérées ainsi&nbsp;: prévoyance 55, complémentaire santé 20, habitation 15, garantie des accidents de la vie 10, auto 10. L'assurance auto ne compte pas sans véhicule. La prévoyance ne compte pas pour un retraité, un étudiant, une personne sans emploi, en invalidité ou qui vit de son patrimoine.</li>
-              <li><strong>Diversification (8&nbsp;%)</strong>&nbsp;: nombre de classes d'actifs. Comptes et livrets, fonds euros, actions (avec ETF et obligations), autres placements&nbsp;: chacune compte dès 1&nbsp;000&nbsp;€ et 5&nbsp;% de vos placements financiers. L'immobilier compte dès qu'il dépasse 5&nbsp;% du total. 1 classe → 25 · 2 → 50 · 3 → 72 · 4 → 88 · 5 → 92, plus 12 points si aucune classe financière ne dépasse 60&nbsp;% du total. Non noté sous 10&nbsp;000&nbsp;€ de placements et d'immobilier.</li>
+              <li><strong>Diversification (8&nbsp;%)</strong>&nbsp;: nombre de classes d'actifs. Comptes et livrets, fonds euros, actions (avec ETF et obligations), autres placements&nbsp;: chacune compte pleinement dès 1&nbsp;000&nbsp;€ et 5&nbsp;% de vos placements financiers, et en partie en dessous (500&nbsp;€ comptent pour une demi-classe). L'immobilier compte pleinement dès 5&nbsp;% du total. 1 classe → 25 · 2 → 50 · 3 → 72 · 4 → 88 · 5 → 92, au prorata entre deux, plus 12 points si aucune classe financière ne dépasse 60&nbsp;% du total, ce bonus diminuant progressivement jusqu'à 75&nbsp;%. Non noté sous 10&nbsp;000&nbsp;€ de placements et d'immobilier, puis son poids monte progressivement jusqu'à 20&nbsp;000&nbsp;€.</li>
               <li><strong>Sécurité du revenu (7&nbsp;%)</strong>&nbsp;: une base selon votre statut, plus un bonus pour vos revenus annexes et pour le second revenu du couple (détail plus haut, dans «&nbsp;Comment est calculée la Sécurité du revenu&nbsp;»), dans la limite de 100.</li>
             </ul>
           </div>
@@ -1044,6 +1066,7 @@
             <ul>
               <li>Le score est la moyenne des notes des piliers, pondérée par leurs poids, arrondie à l'unité.</li>
               <li>Un pilier non noté (le taux d'épargne d'un retraité, la diversification sous 10&nbsp;000&nbsp;€…) est retiré du calcul&nbsp;: son poids est réparti sur les autres, au prorata.</li>
+              <li>Un déficit retire des points, 15 au plus&nbsp;: un point par pour cent du revenu au-delà de l'écart toléré, pleinement quand votre épargne mobilisable couvre moins de 40&nbsp;% de l'horizon, de moins en moins ensuite, plus du tout quand elle couvre tout l'horizon (voir «&nbsp;Quand vos dépenses dépassent vos revenus&nbsp;»).</li>
               <li>Le score peut ensuite être plafonné&nbsp;: par votre budget (voir ci-dessous), à 54 en cas de découvert fréquent, à 72 pendant les études. Le plafond le plus bas s'applique, et la carte de score l'indique.</li>
               <li>Les niveaux&nbsp;: Fragile de 0 à 34, Stable de 35 à 54, Solide de 55 à 72, Libre de 73 à 88, Élite de 89 à 100.</li>
             </ul>
@@ -1060,6 +1083,7 @@
               <li><strong>Horizon</strong>&nbsp;: 25 ans. Après 70 ans, jusqu'à vos 95 ans, avec 5 ans au moins. 2 ans pendant les études, une recherche d'emploi ou un congé parental, des périodes temporaires.</li>
               <li><strong>Limite du score selon la durée</strong>&nbsp;: 20 sans aucune réserve, 34 (Fragile) à 8&nbsp;% de l'horizon, soit 2 ans sur 25 ans, 54 (Stable) à 40&nbsp;%, soit 10 ans sur 25 ans, puis la limite remonte jusqu'à disparaître à l'horizon.</li>
               <li><strong>Progressivité</strong>&nbsp;: la limite est nulle à l'écart toléré et ne joue pleinement qu'à partir de trois fois cet écart. Jusqu'à deux fois l'écart toléré, l'écart est jugé léger&nbsp;: il est signalé, sans devenir une priorité du plan.</li>
+              <li><strong>Points retirés</strong>&nbsp;: en plus de la limite, chaque pour cent du revenu au-delà de l'écart toléré retire un point, 15 au plus, pleinement sous 40&nbsp;% de l'horizon, puis de moins en moins jusqu'à l'horizon. Revenir à l'équilibre fait donc toujours gagner des points.</li>
               <li><strong>Ce que vous lisez</strong>&nbsp;: sous 40&nbsp;% de l'horizon, un déficit à corriger&nbsp;; entre 40&nbsp;% et l'horizon, un rythme de retrait à ralentir&nbsp;; au-delà, vous vivez de votre épargne à un rythme soutenable, sans pénalité.</li>
             </ul>
           </div>
@@ -1073,7 +1097,7 @@
               <li><strong>Étudiant</strong>&nbsp;: prévoyance non notée, horizon de 2 ans, un taux d'épargne bas ne pénalise pas, score plafonné à 72 (Solide) pendant les études.</li>
               <li><strong>Sans emploi, invalidité ou arrêt longue durée, congé parental, revenus du patrimoine</strong>&nbsp;: un taux d'épargne bas ne pénalise pas. La prévoyance n'est pas notée, sauf en congé parental (vous restez salarié). Horizon de 2 ans sans emploi et en congé parental.</li>
               <li><strong>De 60 à 67 ans</strong>&nbsp;: un taux d'épargne bas pèse de moins en moins, et plus du tout à 67 ans.</li>
-              <li><strong>Quand vous puisez dans votre épargne</strong>&nbsp;: dès que vos réserves couvrent 40&nbsp;% de l'horizon, un taux d'épargne bas pèse de moins en moins, et plus du tout quand elles couvrent tout l'horizon (progressivement, au-delà de l'écart toléré).</li>
+              <li><strong>Quand vous puisez dans votre épargne, à partir de 60&nbsp;ans ou si vous vivez de votre patrimoine</strong>&nbsp;: dès que vos réserves couvrent 40&nbsp;% de l'horizon, un taux d'épargne bas pèse de moins en moins, et plus du tout quand elles couvrent tout l'horizon (progressivement, au-delà de l'écart toléré). La règle s'installe de 55 à 60&nbsp;ans&nbsp;; avant, un retrait sur l'épargne ne neutralise pas le taux d'épargne.</li>
               <li><strong>Sans revenu</strong>&nbsp;: le taux d'épargne vaut 0 (sauf statut qui le neutralise) et il n'y a pas d'écart toléré&nbsp;: tout écart compte.</li>
               <li><strong>Couple</strong>&nbsp;: les montants sont ceux du foyer. Le second revenu ajoute 16 (revenu proche du vôtre), 9 (revenu plus faible ou partiel) ou 0 (aucun) à la sécurité du revenu.</li>
               <li><strong>Propriétaire qui rembourse un crédit</strong>&nbsp;: la mensualité compte une seule fois, dans le poids du logement. Le capital remboursé compte dans le taux d'épargne, comme pour l'INSEE, jamais dans l'épargne de sécurité.</li>
@@ -1086,7 +1110,8 @@
             <ul>
               <li>Seuls les piliers notés sous 75/100 entrent dans le plan, trois étapes au plus. Si tous vos piliers notés sont à 75 ou plus, le plan vous propose de garder le cap.</li>
               <li>L'ordre suit d'abord les urgences&nbsp;: le budget s'il est en déficit ou en retrait trop rapide, puis l'endettement s'il est noté sous 50 ou si vous avez un crédit conso, puis l'épargne de sécurité si elle est notée sous 65. Viennent ensuite les piliers qui peuvent rapporter le plus de points (poids multiplié par les points manquants).</li>
-              <li>En déficit ou en retrait trop rapide, le plan commence par le budget et ne vous demande ni d'épargner davantage, ni de constituer une épargne de sécurité (sauf pour sortir d'un découvert fréquent), ni d'investir. En cas de découvert fréquent, pas d'objectif d'épargne. En cas de découvert fréquent ou d'endettement noté sous 35, pas de conseil de placement.</li>
+              <li>En déficit ou en retrait trop rapide, le plan commence par le budget et ne vous demande ni d'épargner davantage, ni de constituer une épargne de sécurité (sauf pour sortir d'un découvert fréquent), ni d'investir. En cas de découvert fréquent, pas d'objectif d'épargne. En cas de découvert fréquent ou d'endettement noté sous 35, pas de conseil de placement. Pas de conseil de diversification non plus pendant une période sans revenu d'activité (études, recherche d'emploi, congé parental, invalidité), ni quand vous puisez dans votre épargne avant 60&nbsp;ans.</li>
+              <li>Chaque étape reçoit un objectif chiffré (un montant à mettre de côté, un crédit à solder, une protection à vérifier) et les points qu'il rapporte, calculés en refaisant le calcul du score avec la situation modifiée. Un objectif sans effet sur le score n'est pas affiché, sauf pour le budget, l'endettement et l'épargne de sécurité.</li>
               <li>Les textes s'adaptent à votre statut et à votre situation&nbsp;: retraite, études, recherche d'emploi, invalidité, congé parental, indépendant, revenus du patrimoine, propriétaire ou locataire, âge.</li>
               <li>Le plan détaillé reçu par email est rédigé par une intelligence artificielle à partir des mêmes priorités, dans le même ordre et avec les mêmes règles. Il reprend vos montants pour chiffrer chaque axe d'amélioration en euros, et ne vous fixe pas de points à gagner.</li>
             </ul>
@@ -1096,7 +1121,7 @@
           <summary>Les contrôles de vos réponses</summary>
           <div class="mric-more-body">
             <ul>
-              <li>Tant que le revenu et les dépenses sont vides ou à zéro, ou que l'âge n'est pas compris entre 18 et 110 ans, le score n'est pas affiché («&nbsp;À compléter&nbsp;»), et le partage comme l'envoi du plan sont bloqués.</li>
+              <li>Tant que le revenu et les dépenses sont vides ou à zéro, que l'activité n'est pas choisie, ou que l'âge n'est pas compris entre 18 et 110 ans, le score n'est pas affiché («&nbsp;À compléter&nbsp;»), et le partage comme l'envoi du plan sont bloqués.</li>
               <li>Un crédit conso supérieur aux autres crédits en fait partie&nbsp;: le score retient son montant comme autres crédits.</li>
               <li>Des dépenses totales inférieures au logement plus les crédits sont remplacées par cette somme, qui en fait partie.</li>
               <li>Si vos dépenses plus votre épargne mensuelle s'écartent de votre revenu de plus de 15&nbsp;%, un message vous invite à vérifier vos montants (sauf si vous n'épargnez rien et dépensez plus que votre revenu&nbsp;: c'est alors un déficit, traité à part).</li>
@@ -1150,7 +1175,7 @@
               <li>INSEE, <a href="https://www.insee.fr/fr/statistiques/8672665" target="_blank" rel="noopener">Insee Focus n° 371, «&nbsp;Les montants de patrimoine détenus par les ménages en 2024&nbsp;»</a>, 9 décembre 2025.</li>
               <li>Haut Conseil de stabilité financière, décision D-HCSF-2021-7&nbsp;: pour un crédit immobilier, mensualités plafonnées à 35&nbsp;% des revenus avant impôt, assurance comprise. Le score raisonne, lui, après impôt.</li>
               <li>Repères usuels, non officiels&nbsp;: épargne de sécurité de 3 à 6 mois de dépenses, taux d'épargne de 15 à 20&nbsp;%, taux d'effort logement de 33&nbsp;% au plus.</li>
-              <li>Version de la méthode&nbsp;: octobre 2026, dernière révision le 8 octobre 2026.</li>
+              <li>Version de la méthode&nbsp;: octobre 2026, dernière révision le 9 octobre 2026.</li>
             </ul>
           </div>
         </details>
@@ -1197,7 +1222,9 @@
 
   var root=document.querySelector('.mric-calc');
 
+  var OVR=null;
   function num(id){
+    if(OVR&&OVR.hasOwnProperty(id))return OVR[id];
     var el=document.getElementById('mric-'+id);
     if(!el)return 0;
     var v=parseFloat(String(el.value).replace(/[\u2212\u2013]/g,'-').replace(/[\s  ]/g,'').replace(',','.'));
@@ -1210,7 +1237,7 @@
     if(v<0&&id!=='alloc-immo'&&id!=='alloc-biens')return 0;
     return v;
   }
-  function chk(id){var el=document.getElementById('mric-'+id);return !!(el&&el.checked);}
+  function chk(id){if(OVR&&OVR.hasOwnProperty(id))return !!OVR[id];var el=document.getElementById('mric-'+id);return !!(el&&el.checked);}
   function fmtEuro(n){return Math.round(n).toLocaleString('fr-FR',{style:'currency',currency:'EUR',minimumFractionDigits:0,maximumFractionDigits:0});}
 
   // piecewise-linear interpolation; pts sorted ascending by x; clamps at ends
@@ -1347,7 +1374,7 @@
   }
 
   // ---- pillar scoring ----
-  function statutVal(){var el=document.getElementById('mric-statut');return el?el.value:'cdi';}
+  function statutVal(){if(OVR&&OVR.hasOwnProperty('statut'))return OVR.statut;var el=document.getElementById('mric-statut');return el?el.value:'';}
   function computePillars(){
     var revenu=num('revenu'), depenses=num('depenses');
     var epargneMois=num('epargne-mois'), epargneSecu=Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig'));
@@ -1373,7 +1400,7 @@
     // après 70 ans, horizon jusqu'à 95 ans (5 ans au moins)
     var horizon=(stH==='etudiant'||stH==='precaire'||stH==='parental')?2:(age>70?Math.max(5,95-age):25);
     var B={etat:'equilibre',ecart:Math.max(0,ecart),reserves:reserves,horizon:horizon,annees:null,cap:100,wr:0,leger:false,
-      ecartSoutenable:reserves/(12*horizon),sansRevenu:revenu<=0};
+      ecartSoutenable:reserves/(12*horizon),sansRevenu:revenu<=0,tol:tolerance};
     if(ecart>tolerance){
       B.annees=reserves/(12*ecart);
       B.etat=B.annees>=horizon?'puise_soutenable':(B.annees>=0.4*horizon?'puise_limite':'deficit');
@@ -1389,12 +1416,12 @@
     }
 
     var P={};
-    P._incomplet=!(age>=18&&age<=110)||(revenu<=0&&num('depenses')<=0);
+    P._incomplet=!(age>=18&&age<=110)||(revenu<=0&&num('depenses')<=0)||!statutVal();
 
     // 1. épargne de sécurité (mois de coussin)
     var mois=depenses>0?epargneSecu/depenses:(epargneSecu>0?12:0);
     var decEl=document.getElementById('mric-decouvert');
-    var decouvert=decEl?decEl.value:'jamais';
+    var decouvert=OVR&&OVR.hasOwnProperty('decouvert')?OVR.decouvert:(decEl?decEl.value:'jamais');
     var secuNote=lerp(mois,[[0,0],[1,30],[3,65],[6,90],[9,100]]);
     if(decouvert==='parfois')secuNote*=0.75;
     if(decouvert==='souvent')secuNote=Math.min(secuNote,10);
@@ -1418,7 +1445,7 @@
       // progressivement de 60 à 67 ans, et quand on puise dans son épargne à un rythme qui se rapproche du soutenable
       var tSoft=['rentier','etudiant','precaire','parental','invalidite'].indexOf(statutE)>=0?1:0;
       var tAge=age>=60?clamp((age-60)/7,0,1):0;
-      var tDraw=(B.annees!=null&&B.wr>0)?B.wr*clamp((B.annees-0.4*horizon)/(0.6*horizon),0,1):0;
+      var tDraw=(B.annees!=null&&B.wr>0)?B.wr*clamp((B.annees-0.4*horizon)/(0.6*horizon),0,1)*(statutE==='rentier'?1:clamp((age-55)/5,0,1)):0;
       P._epT=Math.max(tSoft,tAge,tDraw);
       P._epWhy=tSoft?statutE:(tDraw>=tAge?'ponction':'age');
       P.epargne={note:lerp(taux,[[0,0],[5,35],[10,55],[15,72],[20,85],[30,95],[40,100]]),
@@ -1466,6 +1493,7 @@
       meta:(function(){var LBL={'ass-prevoyance':'prévoyance','ass-sante':'mutuelle','ass-habitation':'habitation','ass-gav':'accidents de la vie','ass-auto':'auto'};
         var manque=items.filter(function(it){return !horsChamp(it[0])&&!chk(it[0]);}).map(function(it){return LBL[it[0]];});
         if(!manque.length)return 'Vos protections clés sont en place';
+        if(chk('ass-prev-nsp')&&!chk('ass-prevoyance')&&!sansPrev)manque=manque.map(function(x){return x==='prévoyance'?'prévoyance (à vérifier)':x;});
         return 'À compléter&nbsp;: <b>'+manque.slice(0,2).join(', ')+'</b>'+(manque.length>2?'…':'');})()};
 
     // 7. diversification
@@ -1473,21 +1501,23 @@
     // une classe financière compte dès 1 000 € et 5 % des placements financiers ; l'immobilier dès 5 % du total
     var finTot=a.sum*(100-a.pct.immo)/100;
     var classes=['cash','oblig','actions','autres'].filter(function(k){var v=a.pct[k]*a.sum/100;return v>=1000&&finTot>0&&v>=0.05*finTot;}).length+(a.pct.immo>5?1:0);
+    var credit=function(v){return finTot>0&&v>0?clamp(v/1000,0,1)*clamp(v/(0.05*finTot),0,1):0;};
+    var classesC=['cash','oblig','actions','autres'].reduce(function(t,k){return t+credit(a.pct[k]*a.sum/100);},0)+clamp(a.pct.immo/5,0,1);
     // l'immobilier (résidence principale le plus souvent) ne compte pas comme une concentration
     var maxAlloc=Math.max(a.pct.cash,a.pct.oblig,a.pct.actions,a.pct.autres);
-    var base=lerp(classes,[[0,0],[1,25],[2,50],[3,72],[4,88],[5,92]]);
-    var bonus=(a.sum>0&&maxAlloc<=60)?12:0;
+    var base=lerp(classesC,[[0,0],[1,25],[2,50],[3,72],[4,88],[5,92]]);
+    var bonus=a.sum>0?12*clamp((75-maxAlloc)/15,0,1):0;
     if(a.sum<10000){
       P.divers={note:0,na:true,val:'Non compté',meta:'Compté à partir de <b>10 000 €</b> de placements et d\'immobilier'};
     }else{
-      P.divers={note:clamp(base+bonus,0,100),
+      P.divers={note:clamp(base+bonus,0,100),_wf:clamp((a.sum-10000)/10000,0,1),
         val:classes+' classe'+(classes>1?'s':'')+' d\'actifs',
         meta:maxAlloc>60?'Concentré&nbsp;: <b>'+Math.round(maxAlloc)+'&nbsp;%</b> sur une seule classe':(classes>=3?'Bon équilibre entre classes d\'actifs':'Peu de classes d\'actifs&nbsp;: <b>'+classes+'</b>')};
     }
 
     // 8. sécurité du revenu (statut = stabilité + revenus complémentaires)
     var statutEl=document.getElementById('mric-statut');
-    var statut=statutEl?statutEl.value:'cdi';
+    var statut=statutVal();
     var complement=clamp(num('complement'),0,100);
     var STAT={fonctionnaire:85,retraite:85,cdi:75,rentier:75,parental:65,independant:60,invalidite:60,cdd:45,etudiant:40,precaire:28};
     var STATLBL={fonctionnaire:'Fonctionnaire',retraite:'Retraité',cdi:'CDI',rentier:'Revenus du patrimoine',independant:'Indépendant',cdd:'CDD / intérim',etudiant:'Étudiant',precaire:'Sans emploi',invalidite:'Invalidité',parental:'Congé parental'};
@@ -1516,6 +1546,8 @@
     return P;
   }
   function active(P){return ORDER.filter(function(k){return !P[k].na;});}
+  // poids d'un pilier (la diversification monte en charge de 10 000 à 20 000 €)
+  function wOf(P,k){return META[k].w*(P[k]._wf==null?1:P[k]._wf);}
 
   // lien du levier « protections » : nous n'avons pas de page prévoyance, on ne renvoie que vers ce qui manque et existe
   function assurLink(){
@@ -1579,7 +1611,8 @@
         return{t:'Allégez le poids de votre logement',d:dl+'Si vous remboursez un crédit, une renégociation, ou un rachat s\'il ne rallonge pas trop la durée, peut alléger la mensualité. Si vous louez, vérifiez vos droits aux aides au logement (APL) et comparez les loyers avant votre prochain déménagement.'};
       case 'assur':
         var stA=statutVal(),noPrev=['retraite','etudiant','rentier','precaire','invalidite'].indexOf(stA)>=0,parts=[];
-        if(!noPrev&&!chk('ass-prevoyance'))parts.push(stA==='independant'?'Une prévoyance (décès, invalidité, arrêt de travail) protège votre budget si vous ne pouvez plus travailler. Indépendant, vous n\'avez généralement pas de contrat collectif&nbsp;; au régime réel, un contrat dit Madelin est déductible de votre bénéfice imposable (pas en micro-entreprise).':'Une prévoyance (décès, invalidité, arrêt de travail) protège votre budget si vous ne pouvez plus travailler&nbsp;: vérifiez d\'abord ce que couvre le contrat de votre employeur, c\'est la protection la plus souvent oubliée.');
+        if(!noPrev&&!chk('ass-prevoyance')&&chk('ass-prev-nsp'))parts.push('Vous ne savez pas si vous avez une prévoyance&nbsp;: demandez la notice du contrat collectif à votre service RH, ou regardez la ligne « prévoyance » de votre bulletin de paie. La plupart des cadres en ont une, beaucoup de non-cadres aussi depuis les accords de branche.');
+        else if(!noPrev&&!chk('ass-prevoyance'))parts.push(stA==='independant'?'Une prévoyance (décès, invalidité, arrêt de travail) protège votre budget si vous ne pouvez plus travailler. Indépendant, vous n\'avez généralement pas de contrat collectif&nbsp;; au régime réel, un contrat dit Madelin est déductible de votre bénéfice imposable (pas en micro-entreprise).':'Une prévoyance (décès, invalidité, arrêt de travail) protège votre budget si vous ne pouvez plus travailler&nbsp;: vérifiez d\'abord ce que couvre le contrat de votre employeur, c\'est la protection la plus souvent oubliée.');
         if(!chk('ass-sante'))parts.push('Une complémentaire santé évite les plus grosses dépenses de soins&nbsp;; avec des revenus modestes, la Complémentaire santé solidaire peut être gratuite.');
         if(!chk('ass-habitation'))parts.push('L\'assurance habitation, obligatoire pour un locataire, couvre aussi votre responsabilité civile.');
         if(!chk('ass-novehic')&&!chk('ass-auto'))parts.push('L\'assurance auto est obligatoire dès qu\'un véhicule circule.');
@@ -1651,14 +1684,11 @@
       ctx.beginPath();ctx.arc(pv[0],pv[1],3.2,0,2*Math.PI);ctx.fillStyle='#00F5C0';ctx.fill();}
   }
 
-  // ---- render ----
-  function calculer(){
-    updateAllocTotal();
-    var P=computePillars();
+  function finalize(P){
     // un taux d'épargne inférieur à la moyenne des autres piliers est rapproché de cette moyenne selon la part de neutralisation :
     // à 1, il ne pèse plus (même score que s'il était retiré) ; le passage est continu, sans saut de score
     if(!P.epargne.na&&P._epT>0){
-      var w2=0,s2=0;active(P).forEach(function(k){if(k!=='epargne'){w2+=META[k].w;s2+=META[k].w*clamp(P[k].note,0,100);}});
+      var w2=0,s2=0;active(P).forEach(function(k){if(k!=='epargne'){w2+=wOf(P,k);s2+=wOf(P,k)*clamp(P[k].note,0,100);}});
       var avgO=w2>0?s2/w2:0;
       if(P.epargne.note<avgO){
         var WHY={rentier:'Vous vivez de votre patrimoine',etudiant:'Pendant les études',precaire:'Sans emploi',parental:'Pendant un congé parental',invalidite:'En invalidité ou arrêt longue durée',ponction:'Vous vivez en partie de votre épargne',age:'À l\'approche de la retraite'};
@@ -1668,8 +1698,11 @@
       }
     }
     var ACT=active(P), wsum=0, score=0;
-    ACT.forEach(function(k){wsum+=META[k].w;score+=META[k].w*clamp(P[k].note,0,100);});
-    score=Math.round(wsum>0?score/wsum:0);
+    ACT.forEach(function(k){wsum+=wOf(P,k);score+=wOf(P,k)*clamp(P[k].note,0,100);});
+    var Bd=P._budget,pen=0;
+    if(Bd.annees!=null&&!Bd.sansRevenu&&Bd.ecart>Bd.tol){pen=Math.min(15,100*(Bd.ecart-Bd.tol)/Math.max(1,num('revenu')))*(1-clamp((Bd.annees-0.4*Bd.horizon)/(0.6*Bd.horizon),0,1));}
+    P._penBudget=pen;
+    score=Math.round(Math.max(0,(wsum>0?score/wsum:0)-pen));
     var plafond={budget:false,decouvert:false,etudiant:false};
     var capR=Math.round(P._budget.cap);
     if(capR<score){score=capR;plafond.budget=true;}
@@ -1677,6 +1710,103 @@
     if(P._etudiant&&score>72){score=72;plafond.etudiant=true;}
     P._plafond=plafond;
     P._score=score;
+    return score;
+  }
+
+  // ---- recommandations chiffrées (v9) ----
+  // une recommandation = des écarts sur les saisies (d), des valeurs posées (set) ; le gain se mesure en relançant le moteur
+  function situation(r){
+    var o={};
+    ['age','revenu','depenses','logement','capital-immo','credits','conso','epargne-mois','complement','alloc-cash','alloc-oblig','alloc-actions','alloc-immo','alloc-autres','alloc-biens'].forEach(function(k){o[k]=num(k);});
+    (r||[]).forEach(function(x){for(var k in x.d)o[k]=(o[k]||0)+x.d[k];for(var j in x.set)o[j]=x.set[j];});
+    return o;
+  }
+  function scoreSi(r){OVR=situation(r);try{var P2=computePillars();return finalize(P2);}finally{OVR=null;}}
+  function arrondi(n,pas){return Math.ceil(n/pas)*pas;}
+  function depEff(){return Math.max(num('depenses'),num('logement')+Math.max(num('credits'),num('conso')));}
+  function rythme(montant){var e=num('epargne-mois');if(e<=0||montant<=0)return '';var m=Math.ceil(montant/e);
+    if(m>300)return 'À votre rythme actuel ('+fmtEuro(e)+' par mois), il faudrait plus de 25 ans&nbsp;: c\'est votre épargne mensuelle qu\'il faut d\'abord augmenter.';
+    return 'À votre rythme actuel ('+fmtEuro(e)+' par mois), comptez '+(m<=1?'un mois':m<24?'environ '+m+' mois':'environ '+Math.round(m/12)+' ans')+'.';}
+  function recoFor(k,P){
+    var rev=num('revenu'),st=statutVal();
+    switch(k){
+      case 'budget':
+        var B=P._budget;if(rev<=0)return null;
+        var cible=(B.etat==='puise_limite'||((st==='retraite'||st==='rentier'||num('age')>=60)&&B.reserves>0))?B.ecartSoutenable:0,baisse=arrondi(B.ecart-cible,10);
+        if(baisse<=0)return null;
+        return {d:{depenses:-baisse},set:{},obj:'Réduire vos dépenses de <b>'+fmtEuro(baisse)+' par mois</b>'+(cible>0?', pour que votre épargne tienne '+B.horizon+' ans':', pour revenir à l\'équilibre')+'.'};
+      case 'secu':
+        if(P._decouvert==='souvent')return {d:{},set:{decouvert:'jamais'},obj:'Ne plus passer à découvert en fin de mois, en gardant environ <b>'+fmtEuro(arrondi(depEff()/2,50))+'</b> sur le compte courant.'};
+        var dep=depEff(),cous=Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig')),mois=dep>0?cous/dep:0;
+        if(dep<=0||mois>=6)return null;
+        var cibleM=mois<1?1:(mois<3?3:6),manque=arrondi(cibleM*dep-cous,100);
+        return {d:{'alloc-cash':manque},set:{},obj:'Mettre <b>'+fmtEuro(manque)+' de plus</b> de côté sur un livret, pour couvrir <b>'+cibleM+' mois</b> de dépenses'+(cibleM===1?' (premier palier, l\'objectif est 3 à 6 mois)':'')+'.',delai:rythme(manque)};
+      case 'epargne':
+        if(rev<=0)return null;
+        var ep=num('epargne-mois'),cap=P._capitalImmo||0,t=(ep+cap)/rev*100;
+        if(t>=20)return null;
+        var cibleT=t<15?15:20,plus=arrondi(cibleT/100*rev-ep-cap,10);
+        return {d:{'epargne-mois':plus,depenses:-plus},set:{},obj:'Mettre <b>'+fmtEuro(plus)+' de plus par mois</b> de côté, pris sur vos dépenses, pour atteindre <b>'+cibleT+'&nbsp;%</b> de votre revenu.',delai:'Sur un an, cela fait '+fmtEuro(plus*12)+' d\'épargne en plus.'};
+      case 'assur':
+        var noPrev=['retraite','etudiant','rentier','precaire','invalidite'].indexOf(st)>=0;
+        var L=[['ass-prevoyance','une prévoyance',!noPrev],['ass-sante','une mutuelle',true],['ass-habitation','une assurance habitation',true],['ass-auto','l\'assurance auto',!chk('ass-novehic')],['ass-gav','une garantie des accidents de la vie',true]];
+        var set={},det=[];
+        L.forEach(function(x){if(!x[2]||chk(x[0]))return;var o={};o[x[0]]=true;set[x[0]]=true;
+          var g=scoreSi([{d:{},set:o}])-P._score;det.push((x[0]==='ass-prevoyance'&&chk('ass-prev-nsp')?'vérifier votre prévoyance employeur':x[1])+(g>=1?' (<b>+'+g+'&nbsp;pt'+(g>1?'s':'')+'</b>)':''));});
+        if(!det.length)return null;
+        return {d:{},set:set,obj:'Compléter vos protections&nbsp;: '+det.join(', ')+'.'};
+      case 'endett':
+        var cr=num('credits'),cs=Math.min(num('conso'),cr);
+        if(cs>0)return {d:{conso:-cs,credits:-cs,depenses:-cs},set:{},obj:'Solder votre crédit conso ou renouvelable (<b>'+fmtEuro(cs)+' par mois</b>), le plus coûteux.'};
+        return null;
+      case 'logement':
+        if(rev<=0||st==='retraite'||st==='etudiant')return null;
+        var lg=num('logement'),eff=lg/rev*100,cibleE=eff>33?33:25;
+        if(eff<=cibleE)return null;
+        var nl=Math.floor(cibleE/100*rev/10)*10,dl=lg-nl,dc=Math.max(0,P._capitalImmo-nl);
+        return {d:{logement:-dl,depenses:-dl,'capital-immo':-dc},set:{},obj:'À terme, un loyer ou une mensualité de <b>'+fmtEuro(nl)+' par mois</b> ('+cibleE+'&nbsp;% du revenu), soit '+fmtEuro(dl)+' de moins.',delai:'Un levier lent (renégociation, déménagement)&nbsp;: à garder en tête pour votre prochain choix de logement.'};
+      case 'patri':
+        var age=num('age'),pa=patrimoineNet(),rg=P._patriRang,cibleR=rg<50?50:(rg<75?75:90);
+        if(rg>=90||age>=60||st==='retraite'||st==='rentier')return null;
+        var lo=pa,hi=Math.max(pa,1)*2+100000,it=0;
+        while(patrimoinePercentile(hi,age)<cibleR&&it++<40)hi*=2;
+        for(var i=0;i<60;i++){var mid=(lo+hi)/2;if(patrimoinePercentile(mid,age)<cibleR)lo=mid;else hi=mid;}
+        var gap=arrondi(hi-pa,1000);
+        if(gap<=0)return null;
+        var epm=num('epargne-mois');if(epm<=0||gap/(12*epm)>25)return null;
+        var parts={'alloc-cash':Math.max(0,num('alloc-cash')),'alloc-oblig':Math.max(0,num('alloc-oblig')),'alloc-actions':Math.max(0,num('alloc-actions')),'alloc-autres':Math.max(0,num('alloc-autres'))},tot=0,dd={};
+        for(var q in parts)tot+=parts[q];
+        if(tot<=0)dd['alloc-actions']=gap;else for(var q2 in parts)if(parts[q2]>0)dd[q2]=gap*parts[q2]/tot;
+        return {d:dd,set:{},obj:(cibleR===50?'Rejoindre la médiane des ménages de votre âge':'Passer devant '+cibleR+'&nbsp;% des ménages de votre âge')+'&nbsp;: <b>'+fmtEuro(gap)+'</b> de patrimoine en plus.',delai:rythme(gap)?rythme(gap).replace('.',', hors rendement des placements.'):'Un objectif de long terme, porté par l\'épargne régulière.'};
+      case 'divers':
+        var al=allocPercents();if(al.sum<10000)return null;
+        if(['precaire','etudiant','parental','invalidite'].indexOf(st)>=0||(P._budget.etat!=='equilibre'&&!(st==='retraite'||st==='rentier'||num('age')>=60)))return null;
+        var fin=al.sum*(100-al.pct.immo)/100,vals={cash:num('alloc-cash'),oblig:num('alloc-oblig'),actions:num('alloc-actions'),autres:num('alloc-autres')};
+        var NOM={cash:'livrets',oblig:'fonds euros',actions:'actions ou ETF',autres:'autres placements'},ID={cash:'alloc-cash',oblig:'alloc-oblig',actions:'alloc-actions',autres:'alloc-autres'};
+        var manq=(num('age')>=60||st==='retraite'?['oblig','actions','cash']:['actions','oblig','cash']).filter(function(c){return !(vals[c]>=1000&&vals[c]>=0.05*fin);});
+        if(manq.length){var c0=manq[0],mt=arrondi(Math.max(1000,0.06*fin)-Math.max(0,vals[c0]),500),dd={};dd[ID[c0]]=mt;
+          var surplus=Math.max(0,num('alloc-cash'))-6*depEff();
+          if(c0!=='cash'&&surplus>=mt){dd['alloc-cash']=-mt;return {d:dd,set:{},obj:'Déplacer environ <b>'+fmtEuro(mt)+'</b> de vos livrets vers des '+NOM[c0]+'&nbsp;: votre matelas reste au-dessus de 6 mois de dépenses.'};}
+          return {d:dd,set:{},obj:'Ajouter une classe d\'actifs&nbsp;: environ <b>'+fmtEuro(mt)+'</b> en '+NOM[c0]+'.'};}
+        return null;
+      case 'salaire':
+        if(['cdi','cdd','independant','fonctionnaire'].indexOf(st)<0||rev<=0)return null;
+        var cp=num('complement');if(cp>=40)return null;
+        return {d:{complement:10},set:{},obj:'Un revenu complémentaire d\'environ <b>'+fmtEuro(arrondi(rev*0.1,10))+' par mois</b> (loyer, dividendes, activité annexe).'};
+    }
+    return null;
+  }
+  function gainHtml(g,from,k){
+    if(g<1)return '<span class="mric-reco-gain mric-reco-gain-0">'+(k==='budget'||k==='endett'||k==='secu'?'prioritaire&nbsp;: le reste en dépend':'effet faible sur le score')+'</span>';
+    var b0=badgeFor(from),b1=badgeFor(Math.min(100,from+g));
+    return '<span class="mric-reco-gain">+'+g+'&nbsp;pt'+(g>1?'s':'')+'</span>'+(b1.label!==b0.label?'<span class="mric-reco-lvl" style="color:'+b1.color+'">→ niveau '+b1.label+'</span>':'');
+  }
+
+  // ---- render ----
+  function calculer(){
+    updateAllocTotal();
+    var P=computePillars();
+    var score=finalize(P), plafond=P._plafond, ACT=active(P);
 
     // cohérence des montants
     var cohEl=document.getElementById('mric-coherence');
@@ -1742,40 +1872,53 @@
     faibEl.innerHTML=chip(sorted[sorted.length-1])+chip(sorted[sorted.length-2]);
 
     // plan : trié par gain potentiel = poids × (100 - note)
-    var byGain=ACT.slice().sort(function(a,c){return (META[c].w*(100-P[c].note))-(META[a].w*(100-P[a].note));});
+    var byGain=ACT.slice().sort(function(a,c){return (wOf(P,c)*(100-P[c].note))-(wOf(P,a)*(100-P[a].note));});
     // l'ordre suit d'abord les urgences (budget, dette lourde, épargne de sécurité), puis le gain potentiel ;
     // en déficit, on ne conseille ni d'épargner davantage ni d'investir, et pas d'objectif d'épargne en cas de découvert fréquent
     var Bq=P._budget, budgetPrio=(Bq.etat==='deficit'||Bq.etat==='puise_limite')&&!Bq.leger;
     var excl={};
     if(budgetPrio){excl.epargne=1;excl.patri=1;excl.divers=1;if(P._decouvert!=='souvent')excl.secu=1;}
     if(P._decouvert==='souvent')excl.epargne=1;
+    if(['precaire','etudiant','parental','invalidite'].indexOf(statutVal())>=0||(Bq.etat!=='equilibre'&&!(statutVal()==='retraite'||statutVal()==='rentier'||num('age')>=60)))excl.divers=1;
     if(P._decouvert==='souvent'||P.endett.note<35){excl.patri=1;excl.divers=1;}
     var faibles=byGain.filter(function(k){return P[k].note<75&&!excl[k];});
     var urgent=[];
     if(budgetPrio)urgent.push('budget');
     if(faibles.indexOf('endett')>=0&&(P.endett.note<50||num('conso')>0))urgent.push('endett');
     if(faibles.indexOf('secu')>=0&&P.secu.note<65)urgent.push('secu');
-    var steps=urgent.concat(faibles.filter(function(k){return urgent.indexOf(k)<0;})).slice(0,3);
+    var RECOS=[],recoOf={};
+    urgent.concat(faibles).forEach(function(k){if(recoOf[k]!==undefined)return;var r=P._incomplet?null:recoFor(k,P);if(r){r.key=k;r.gain=Math.max(0,scoreSi([r])-score);if(r.gain<1&&['budget','endett','secu'].indexOf(k)<0)r=null;}recoOf[k]=r||null;});
+    var autres=faibles.filter(function(k){return urgent.indexOf(k)<0;}).sort(function(a,c){var L={logement:1,patri:1,salaire:1};var ga=(recoOf[a]?recoOf[a].gain:-1)-(L[a]?1000:0),gc=(recoOf[c]?recoOf[c].gain:-1)-(L[c]?1000:0);return gc-ga;});
+    var steps=urgent.concat(autres).slice(0,3);
+    steps.forEach(function(k){if(recoOf[k])RECOS.push(recoOf[k]);});
+    window.__mricRecos=RECOS;window.__mricRecoAll=recoOf;
     if(!steps.length)steps=['maintien'];
     planEl.innerHTML='';
+    var combine=RECOS.length>1?scoreSi(RECOS):null;
+    if(combine!=null&&combine>score)planEl.insertAdjacentHTML('beforeend','<div class="mric-traj">En suivant ces '+RECOS.length+' actions&nbsp;: <b>'+score+'</b> → <b style="color:'+badgeFor(combine).color+'">'+combine+' · '+badgeFor(combine).label+'</b></div>');
     steps.forEach(function(k,i){
       var pt=planText(k,P);
+      var rc=RECOS.filter(function(x){return x.key===k;})[0];
       var lk=(k==='maintien'||(k==='salaire'&&['etudiant','precaire'].indexOf(statutVal())>=0)||(k==='logement'&&statutVal()==='retraite'))?null:k==='budget'?(P._budget.etat==='puise_limite'?{label:'Calculateur Runway',url:'https://moneyradar.org/simulateur-runway/'}:{label:'Gérer son budget',url:'https://moneyradar.org/guides/gerer-son-budget/'}):(k==='assur'?assurLink():META[k].link);
       var step=document.createElement('div');
       step.className='mric-plan-step';
-      step.innerHTML='<div class="mric-plan-rank">'+(i+1)+'</div><div class="mric-plan-body"><h4>'+pt.t+'</h4><p>'+pt.d+'</p>'+
+      step.innerHTML='<div class="mric-plan-rank">'+(i+1)+'</div><div class="mric-plan-body"><h4>'+pt.t+'</h4>'+(rc?'<div class="mric-reco"><div class="mric-reco-obj"><span class="mric-reco-k">Objectif</span>'+rc.obj+'</div><div class="mric-reco-res">'+gainHtml(rc.gain,score,rc.key)+'</div>'+(rc.delai?'<div class="mric-reco-delai">'+rc.delai+'</div>':'')+'</div>':'')+'<p>'+pt.d+'</p>'+
         (lk?'<a class="mric-plan-link" href="'+lk.url+'" target="_blank" rel="noopener">'+lk.label+
         ' <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>':'')+'</div>';
       planEl.appendChild(step);
     });
 
+    var lev=document.getElementById('mric-levier');
+    if(lev){var LENT={logement:1,patri:1,salaire:1};var r0=RECOS.filter(function(x){return !LENT[x.key]&&x.gain>=1;}).sort(function(x,y){return y.gain-x.gain;})[0];
+      if(r0&&r0.gain>=1&&!P._incomplet){lev.innerHTML='<p class="mric-levier-k">Votre levier le plus rentable</p><div class="mric-levier-row"><div class="mric-levier-obj">'+r0.obj+'</div><div class="mric-reco-res">'+gainHtml(r0.gain,score,r0.key)+'</div></div>'+(r0.delai?'<p class="mric-reco-delai">'+r0.delai+'</p>':'')+'<p class="mric-levier-more">Vos 3 actions chiffrées et votre trajectoire sont dans votre plan, ci-dessous.</p>';lev.hidden=false;}
+      else{lev.hidden=true;lev.innerHTML='';}}
     planEl.insertAdjacentHTML('beforeend','<p style="font-size:12.5px;line-height:1.5;color:var(--fg-3);margin:14px 0 0">Plan établi à partir de vos réponses et de règles générales&nbsp;: des repères pédagogiques, ni conseil en investissement, ni conseil en assurance ou en crédit.</p>');
 
     // data capture (pour futur lead magnet)
     var statutCap=document.getElementById('mric-statut');
-    window.__mricScoreData={inputs:{age:num('age'),revenu:num('revenu'),depenses:num('depenses'),epargneMois:num('epargne-mois'),capitalImmo:Math.round(P._capitalImmo||0),epargneSecu:Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig')),credits:num('credits'),conso:num('conso'),logement:num('logement'),patrimoine:patrimoineNet(),statut:(statutCap?statutCap.value:'cdi'),complement:num('complement'),decouvert:(document.getElementById('mric-decouvert')?document.getElementById('mric-decouvert').value:'jamais'),foyer:foyer,partenaire:(foyer==='couple'&&document.getElementById('mric-partenaire')?document.getElementById('mric-partenaire').value:null),alloc:{cash:Math.max(0,num('alloc-cash')),oblig:Math.max(0,num('alloc-oblig')),actions:Math.max(0,num('alloc-actions')),immo:num('alloc-immo'),autres:Math.max(0,num('alloc-autres')),biens:num('alloc-biens')},assurances:{prevoyance:chk('ass-prevoyance'),sante:chk('ass-sante'),habitation:chk('ass-habitation'),gav:chk('ass-gav'),auto:chk('ass-auto'),sansVehicule:chk('ass-novehic')}},
-      results:{score:score,badge:b.label,incomplet:!!P._incomplet,deficit:!!P._deficit,budget:{etat:P._budget.etat,ecartMensuel:Math.round(P._budget.ecart),reserves:Math.round(P._budget.reserves),moisReserves:P._budget.annees==null?null:Math.min(600,Math.floor(P._budget.annees*12)),horizon:P._budget.horizon,ecartSoutenable:Math.round(P._budget.ecartSoutenable),leger:!!P._budget.leger},rangPatrimoine:Math.round(P._patriRang),priorites:steps.slice(),plafond:P._plafond,piliers:ORDER.reduce(function(o,k){o[k]=P[k].na?null:Math.round(P[k].note);return o;},{}),details:ORDER.reduce(function(o,k){var t=function(h){return String(h==null?'':h).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};o[k]=P[k].na?null:{val:t(P[k].val),meta:t(P[k].meta)};return o;},{})},
-      meta:{calculator:'score-financier',version:'v8',timestamp:new Date().toISOString()}};
+    window.__mricScoreData={inputs:{age:num('age'),revenu:num('revenu'),depenses:num('depenses'),epargneMois:num('epargne-mois'),capitalImmo:Math.round(P._capitalImmo||0),epargneSecu:Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig')),credits:num('credits'),conso:num('conso'),logement:num('logement'),patrimoine:patrimoineNet(),statut:(statutCap?statutCap.value:'cdi'),complement:num('complement'),decouvert:(document.getElementById('mric-decouvert')?document.getElementById('mric-decouvert').value:'jamais'),foyer:foyer,partenaire:(foyer==='couple'&&document.getElementById('mric-partenaire')?document.getElementById('mric-partenaire').value:null),alloc:{cash:Math.max(0,num('alloc-cash')),oblig:Math.max(0,num('alloc-oblig')),actions:Math.max(0,num('alloc-actions')),immo:num('alloc-immo'),autres:Math.max(0,num('alloc-autres')),biens:num('alloc-biens')},assurances:{prevoyance:chk('ass-prevoyance'),sante:chk('ass-sante'),habitation:chk('ass-habitation'),gav:chk('ass-gav'),auto:chk('ass-auto'),sansVehicule:chk('ass-novehic'),prevoyanceInconnue:chk('ass-prev-nsp')}},
+      results:{score:score,badge:b.label,incomplet:!!P._incomplet,deficit:!!P._deficit,budget:{etat:P._budget.etat,ecartMensuel:Math.round(P._budget.ecart),reserves:Math.round(P._budget.reserves),moisReserves:P._budget.annees==null?null:Math.min(600,Math.floor(P._budget.annees*12)),horizon:P._budget.horizon,ecartSoutenable:Math.round(P._budget.ecartSoutenable),leger:!!P._budget.leger},rangPatrimoine:Math.round(P._patriRang),priorites:steps.slice(),recos:RECOS.map(function(r){return {key:r.key,objectif:String(r.obj).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' '),gain:r.gain};}),scoreCible:combine,plafond:P._plafond,piliers:ORDER.reduce(function(o,k){o[k]=P[k].na?null:Math.round(P[k].note);return o;},{}),details:ORDER.reduce(function(o,k){var t=function(h){return String(h==null?'':h).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};o[k]=P[k].na?null:{val:t(P[k].val),meta:t(P[k].meta)};return o;},{})},
+      meta:{calculator:'score-financier',version:'v9',timestamp:new Date().toISOString()}};
 
     resultsSection.classList.add('mric-visible');
     var anims=resultsSection.querySelectorAll('.mric-anim');
@@ -1783,6 +1926,9 @@
     setTimeout(function(){drawRadar(P);},220);
   }
 
+  (function(){var a=document.getElementById('mric-ass-prevoyance'),n=document.getElementById('mric-ass-prev-nsp');if(!a||!n)return;
+    a.addEventListener('change',function(){if(a.checked&&n.checked){n.checked=false;}});
+    n.addEventListener('change',function(){if(n.checked&&a.checked){a.checked=false;}});})();
   document.getElementById('mric-btn-calculer').addEventListener('click',function(){
     calculer();
     var t=document.getElementById('mric-results');
@@ -1923,7 +2069,7 @@
  var titles=['Vous','Budget','Patrimoine','Protections'];
  var headings=['Parlons de vous','Budget du mois','Épargne et patrimoine','Vos protections'];
  var descriptions=[
-  'Les valeurs affichées sont un exemple. Remplacez-les par les vôtres pour commencer votre bilan.',
+  'Votre score s\'affiche dès que votre âge, votre activité, votre revenu et vos dépenses sont renseignés. Le reste l\'affine.',
   'Un mois habituel suffit. Montants <b>pour tout le foyer</b>.',
   'Poste par poste, en euros. Le total donne votre patrimoine net.',
   'Face aux imprévus, vos couvertures font la différence. Cochez celles que vous avez.'
@@ -2058,7 +2204,7 @@
  var segs=root.querySelectorAll('.sf-scale .sf-segs>span'),mark=root.querySelector('.sf-mark'),nextTxt=document.getElementById('sf-next'),bars=document.getElementById('sf-bars');
  var live=root.querySelector('.sf-live'),dateEl=root.querySelector('.sf-date'),miniBadge=document.getElementById('mric-mini-badge');
  var numEl=document.getElementById('mric-gauge-num'),badgeLbl=document.getElementById('mric-badge-label'),badgeMsg=document.getElementById('mric-badge-msg'),miniNum=document.getElementById('mric-mini-num'),ctaScore=document.getElementById('mric-cta-score');
- var INC_MSG='Renseignez votre revenu, vos dépenses et votre âge pour obtenir votre score.';
+ var INC_MSG='Renseignez votre âge, votre activité, votre revenu et vos dépenses pour obtenir votre score.';
  function setText(el,t){if(el&&el.textContent!==t)el.textContent=t;}
  function isIncomplete(r){return !!(r&&r.incomplet);}
  window.__mricIsIncomplete=function(){var d=window.__mricScoreData;return isIncomplete(d&&d.results);};

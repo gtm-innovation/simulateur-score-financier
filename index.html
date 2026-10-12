@@ -1,4 +1,4 @@
-<!-- Calculateur Score Financier v9 · v8 + recommandations chiffrées, sans valeurs d'exemple, prévoyance « je ne sais pas », moteur corrigé (audit du 09/10) · MoneyRadar · 09/10/2026 -->
+<!-- Calculateur Score Financier v9 · recommandations chiffrées, déciles INSEE 2024, patrimoine au niveau de vie, loyers perçus (méthode des banques), prêts sans bien en face · MoneyRadar · 12/10/2026 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
 /* ===================================================
@@ -742,7 +742,7 @@
                   <button data-val="couple" type="button">Couple</button>
                 </div>
               </div>
-              <div class="mric-info-pop" id="mric-info-foyer-pop" hidden>Tout le calcul est mené <b>au niveau du foyer</b> : vous renseignez les revenus, dépenses, crédits et le patrimoine <b>du foyer</b> (pour une personne seule, le foyer, c'est vous). Votre patrimoine est comparé à celui des <b>ménages de votre âge</b> (INSEE), couples compris : pour une personne seule, la comparaison est donc exigeante. Le choix agit aussi sur la <b>Sécurité du revenu</b> : un couple bi-actif est plus résilient, ce qui est valorisé.</div>
+              <div class="mric-info-pop" id="mric-info-foyer-pop" hidden>Tout le calcul est mené <b>au niveau du foyer</b> : vous renseignez les revenus, dépenses, crédits et le patrimoine <b>du foyer</b> (pour une personne seule, le foyer, c'est vous). Votre patrimoine est comparé à celui des <b>ménages de votre âge</b> (INSEE) <b>à niveau de vie égal</b> : 1 part pour une personne seule, 1,5 pour un couple, comme l'INSEE le fait pour les revenus. Le choix agit aussi sur la <b>Sécurité du revenu</b> : un couple bi-actif est plus résilient, ce qui est valorisé.</div>
               <div class="mric-row" id="mric-field-partenaire" style="display:none">
                 <label class="mric-lbl" for="mric-partenaire">Revenu du partenaire</label>
                 <select id="mric-partenaire">
@@ -780,6 +780,10 @@
                 <label class="mric-lbl" for="mric-revenu">Revenu net <small>après impôt · moyenne sur 12 mois si variable</small></label>
                 <div class="mric-val"><input type="text" id="mric-revenu" value="" placeholder="ex. 2 500" inputmode="numeric"><span>€</span></div>
               </div>
+              <div class="mric-row mric-sub">
+                <label class="mric-lbl" for="mric-loyers">dont loyers perçus <small>biens que vous louez, si vous en avez</small></label>
+                <div class="mric-val"><input type="text" id="mric-loyers" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
+              </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-depenses">Dépenses totales <small>logement et crédits compris</small></label>
                 <div class="mric-val"><input type="text" id="mric-depenses" value="" placeholder="ex. 2 200" inputmode="numeric"><span>€</span></div>
@@ -800,6 +804,10 @@
               <div class="mric-row mric-sub mric-sub2">
                 <label class="mric-lbl" for="mric-conso">dont conso / renouvelable</label>
                 <div class="mric-val"><input type="text" id="mric-conso" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
+              </div>
+              <div class="mric-row mric-sub mric-sub2">
+                <label class="mric-lbl" for="mric-credit-locatif">dont crédit locatif</label>
+                <div class="mric-val"><input type="text" id="mric-credit-locatif" value="" placeholder="0" inputmode="numeric"><span>€</span></div>
               </div>
               </div>
               <div class="sf-col">
@@ -834,6 +842,7 @@
               <div class="mric-row"><label class="mric-lbl" for="mric-alloc-immo">Immobilier <small>valeur moins crédit restant</small></label><div class="mric-val"><input type="text" id="mric-alloc-immo" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
               <div class="mric-row"><label class="mric-lbl" for="mric-alloc-autres">Autres placements <small>crypto, or, SCPI…</small></label><div class="mric-val"><input type="text" id="mric-alloc-autres" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
               <div class="mric-row"><label class="mric-lbl" for="mric-alloc-biens">Véhicules, biens pro et autres <small>valeur moins crédit restant</small></label><div class="mric-val"><input type="text" id="mric-alloc-biens" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
+              <div class="mric-row"><label class="mric-lbl" for="mric-dette-sans-bien">Prêts sans bien en face <small>capital restant dû : prêt perso, renouvelable, prêt étudiant</small></label><div class="mric-val"><input type="text" id="mric-dette-sans-bien" value="" placeholder="0" inputmode="numeric"><span>€</span></div></div>
               <div class="mric-alloc-total" id="mric-alloc-total"></div>
             </div>
 
@@ -1023,8 +1032,8 @@
         <div class="mric-weights">
 <details class="mric-w"><summary><b>Épargne de sécurité</b><i>18&nbsp;%</i><div class="mric-w-bar"><span style="width:100%"></span></div></summary><p>Combien de mois de dépenses vos comptes, livrets et fonds euros couvrent. Repère&nbsp;: 3 à 6 mois. Un découvert fréquent en fin de mois réduit fortement cette note&nbsp;: l'épargne n'est alors pas disponible quand il le faudrait, et le score est plafonné au niveau Stable. Un découvert occasionnel réduit cette note d'un quart.</p></details>
 <details class="mric-w"><summary><b>Taux d'épargne</b><i>16&nbsp;%</i><div class="mric-w-bar"><span style="width:89%"></span></div></summary><p>La part de votre revenu mise de côté chaque mois, plus, si vous êtes propriétaire, le capital de votre prêt immobilier remboursé chaque mois&nbsp;: rembourser ce capital, c'est se constituer un patrimoine, et l'INSEE le compte aussi dans le taux d'épargne des ménages. Bon niveau&nbsp;: 15 à 20&nbsp;%. Le montant figure dans votre tableau d'amortissement (ligne «&nbsp;capital amorti&nbsp;» du mois, hors intérêts et assurance), dans votre offre de prêt ou votre espace client. Si vous ne le connaissez pas, laissez 0&nbsp;: le score sera simplement prudent. Ce capital ne compte pas dans l'épargne de sécurité, car il n'est pas disponible. Ce pilier n'est pas compté pour un retraité&nbsp;: on vit alors de ce qu'on a construit, et son poids est réparti sur les autres. Pendant les études, une recherche d'emploi, un congé parental, une invalidité ou si vous vivez de votre patrimoine, il ne compte que s'il fait monter votre score. Il en va de même, progressivement, de 60 à 67&nbsp;ans, et, à partir de 60&nbsp;ans ou si vous vivez de votre patrimoine, quand vous puisez dans votre épargne à un rythme qui se rapproche du soutenable&nbsp;: un taux d'épargne bas ne vous pénalise alors pas. Avant 60&nbsp;ans, puiser dans son épargne ne neutralise pas ce pilier&nbsp;: gagner un peu plus ou dépenser un peu moins ne fait jamais baisser le score.</p></details>
-<details class="mric-w"><summary><b>Patrimoine net vs âge</b><i>15&nbsp;%</i><div class="mric-w-bar"><span style="width:83%"></span></div></summary><p>Votre rang parmi les ménages de votre âge, patrimoine net comme le mesure l'INSEE&nbsp;: immobilier, épargne et placements, mais aussi véhicules, équipement et biens professionnels, moins les crédits immobiliers et ceux liés à un bien. Repère&nbsp;: INSEE, enquête Histoire de vie et Patrimoine 2020-2021, dernière série publiée par âge en patrimoine net, actualisée par MoneyRadar à début 2024 avec l'évolution du patrimoine brut de chaque tranche d'âge publiée par l'INSEE (Insee Focus n° 371). Le rang est une estimation.</p></details>
-<details class="mric-w"><summary><b>Taux d'endettement</b><i>14&nbsp;%</i><div class="mric-w-bar"><span style="width:78%"></span></div></summary><p>Vos mensualités de crédit hors résidence principale (auto, travaux, immobilier locatif, crédit conso) rapportées au revenu. Le crédit de votre logement est compté une seule fois, dans le pilier suivant. Le crédit conso/renouvelable est compté <strong>×1,8</strong> car c'est la dette la plus coûteuse et la plus risquée.</p></details>
+<details class="mric-w"><summary><b>Patrimoine net vs âge</b><i>15&nbsp;%</i><div class="mric-w-bar"><span style="width:83%"></span></div></summary><p>Votre rang parmi les ménages de votre âge, à niveau de vie égal (1 part pour une personne seule, 1,5 pour un couple), patrimoine net comme le mesure l'INSEE&nbsp;: immobilier, épargne et placements, mais aussi véhicules, équipement et biens professionnels, moins les crédits immobiliers et ceux liés à un bien. Repère&nbsp;: INSEE, enquête Histoire de vie et Patrimoine 2023-2024, déciles du patrimoine net par âge début 2024. Le rang est une estimation.</p></details>
+<details class="mric-w"><summary><b>Taux d'endettement</b><i>14&nbsp;%</i><div class="mric-w-bar"><span style="width:78%"></span></div></summary><p>Vos mensualités de crédit hors résidence principale (auto, travaux, immobilier locatif, crédit conso) rapportées au revenu. Le crédit de votre logement est compté une seule fois, dans le pilier suivant. Le crédit conso/renouvelable est compté <strong>×1,8</strong> car c'est la dette la plus coûteuse et la plus risquée. Si vous indiquez un crédit locatif et vos loyers perçus, <strong>70&nbsp;% des loyers</strong> sont déduits du crédit locatif, comme le font les banques.</p></details>
 <details class="mric-w"><summary><b>Poids du logement</b><i>12&nbsp;%</i><div class="mric-w-bar"><span style="width:67%"></span></div></summary><p>Votre loyer ou la mensualité du crédit de votre résidence principale rapporté au revenu (taux d'effort). Locataire ou propriétaire, la même règle s'applique. Seuil de confort&nbsp;: ≤ 33&nbsp;%.</p></details>
 <details class="mric-w"><summary><b>Assurances</b><i>10&nbsp;%</i><div class="mric-w-bar"><span style="width:56%"></span></div></summary><p>Votre couverture contre les risques graves. Pondéré vers la <strong>prévoyance</strong>, la protection la plus souvent oubliée (la santé et l'habitation étant souvent automatiques ou obligatoires). Pensez à vérifier le contrat collectif de votre employeur. La garantie des accidents de la vie compte peu, mais elle couvre un trou que la mutuelle et l'habitation laissent ouvert. La prévoyance n'est notée que si vos revenus viennent de votre travail&nbsp;: elle ne l'est pas pour un retraité, un étudiant, une personne sans emploi, en invalidité ou qui vit de son patrimoine.</p></details>
 <details class="mric-w"><summary><b>Diversification</b><i>8&nbsp;%</i><div class="mric-w-bar"><span style="width:44%"></span></div></summary><p>Le nombre de classes d'actifs et l'équilibre entre elles. Ce pilier compte à partir de 10&nbsp;000&nbsp;€ de placements et d'immobilier (véhicules et biens d'usage exclus), et son poids monte progressivement jusqu'à 20&nbsp;000&nbsp;€&nbsp;: en dessous, il est réparti sur les autres. Une classe de placement compte pleinement à partir de 1&nbsp;000&nbsp;€ et de 5&nbsp;% de vos placements financiers, en partie en dessous, et l'immobilier à partir de 5&nbsp;% du total&nbsp;: ajouter de l'argent ne fait jamais tomber une classe d'un coup. L'immobilier, le plus souvent votre résidence principale, n'est pas compté comme une concentration, et les véhicules, biens professionnels ou biens d'usage ne comptent pas comme un placement.</p></details>
@@ -1051,8 +1060,8 @@
             <ul>
               <li><strong>Épargne de sécurité (18&nbsp;%)</strong>&nbsp;: comptes, livrets et fonds euros, divisés par vos dépenses du mois. 0 mois → 0 · 1 mois → 30 · 3 mois → 65 · 6 mois → 90 · 9 mois ou plus → 100. Découvert occasionnel&nbsp;: note multipliée par 0,75. Découvert fréquent&nbsp;: note limitée à 10.</li>
               <li><strong>Taux d'épargne (16&nbsp;%)</strong>&nbsp;: épargne mise de côté chaque mois, plus le capital immobilier remboursé (limité à votre mensualité de logement), divisés par votre revenu net. 0&nbsp;% → 0 · 5&nbsp;% → 35 · 10&nbsp;% → 55 · 15&nbsp;% → 72 · 20&nbsp;% → 85 · 30&nbsp;% → 95 · 40&nbsp;% ou plus → 100.</li>
-              <li><strong>Patrimoine net selon l'âge (15&nbsp;%)</strong>&nbsp;: votre rang parmi les ménages de votre âge (voir «&nbsp;Le repère de patrimoine&nbsp;»). Rang 0 → 0 · 10<sup>e</sup> → 15 · 25<sup>e</sup> → 35 · 50<sup>e</sup>, la médiane → 60 · 75<sup>e</sup> → 80 · 90<sup>e</sup> → 92 · 99<sup>e</sup> → 100.</li>
-              <li><strong>Taux d'endettement (14&nbsp;%)</strong>&nbsp;: mensualités de crédit hors résidence principale, le crédit conso ou renouvelable compté 1,8 fois, divisées par votre revenu. 0&nbsp;% → 100 · 5&nbsp;% → 92 · 10&nbsp;% → 80 · 15&nbsp;% → 65 · 20&nbsp;% → 50 · 25&nbsp;% → 35 · 30&nbsp;% → 20 · 40&nbsp;% ou plus → 0. Sans revenu&nbsp;: 100 sans crédit, 0 avec.</li>
+              <li><strong>Patrimoine net selon l'âge (15&nbsp;%)</strong>&nbsp;: votre rang parmi les ménages de votre âge, à niveau de vie égal (voir «&nbsp;Le repère de patrimoine&nbsp;»). Rang 0 → 0 · 10<sup>e</sup> → 15 · 25<sup>e</sup> → 35 · 50<sup>e</sup>, la médiane → 60 · 75<sup>e</sup> → 80 · 90<sup>e</sup> → 92 · 99<sup>e</sup> → 100.</li>
+              <li><strong>Taux d'endettement (14&nbsp;%)</strong>&nbsp;: mensualités de crédit hors résidence principale, le crédit conso ou renouvelable compté 1,8 fois, divisées par votre revenu. Avec un crédit locatif et des loyers perçus, méthode «&nbsp;différentielle&nbsp;» des banques&nbsp;: 70&nbsp;% des loyers sont déduits de la mensualité du crédit locatif, le reste à charge s'ajoute aux autres crédits et le tout est divisé par votre revenu hors loyers (un excédent de loyers compte comme un revenu)&nbsp;; ce calcul n'est retenu que s'il est plus favorable. 0&nbsp;% → 100 · 5&nbsp;% → 92 · 10&nbsp;% → 80 · 15&nbsp;% → 65 · 20&nbsp;% → 50 · 25&nbsp;% → 35 · 30&nbsp;% → 20 · 40&nbsp;% ou plus → 0. Sans revenu&nbsp;: 100 sans crédit, 0 avec.</li>
               <li><strong>Poids du logement (12&nbsp;%)</strong>&nbsp;: loyer ou mensualité de crédit de la résidence principale, divisé par votre revenu. Jusqu'à 20&nbsp;% → 100 · 25&nbsp;% → 90 · 30&nbsp;% → 75 · 35&nbsp;% → 55 · 40&nbsp;% → 35 · 50&nbsp;% → 10 · 60&nbsp;% ou plus → 0. Sans revenu&nbsp;: 100 sans logement à payer, 0 sinon.</li>
               <li><strong>Assurances (10&nbsp;%)</strong>&nbsp;: part des protections détenues, pondérées ainsi&nbsp;: prévoyance 55, complémentaire santé 20, habitation 15, garantie des accidents de la vie 10, auto 10. L'assurance auto ne compte pas sans véhicule. La prévoyance ne compte pas pour un retraité, un étudiant, une personne sans emploi, en invalidité ou qui vit de son patrimoine.</li>
               <li><strong>Diversification (8&nbsp;%)</strong>&nbsp;: nombre de classes d'actifs. Comptes et livrets, fonds euros, actions (avec ETF et obligations), autres placements&nbsp;: chacune compte pleinement dès 1&nbsp;000&nbsp;€ et 5&nbsp;% de vos placements financiers, et en partie en dessous (500&nbsp;€ comptent pour une demi-classe). L'immobilier compte pleinement dès 5&nbsp;% du total. 1 classe → 25 · 2 → 50 · 3 → 72 · 4 → 88 · 5 → 92, au prorata entre deux, plus 12 points si aucune classe financière ne dépasse 60&nbsp;% du total, ce bonus diminuant progressivement jusqu'à 75&nbsp;%. Non noté sous 10&nbsp;000&nbsp;€ de placements et d'immobilier, puis son poids monte progressivement jusqu'à 20&nbsp;000&nbsp;€.</li>
@@ -1099,7 +1108,7 @@
               <li><strong>De 60 à 67 ans</strong>&nbsp;: un taux d'épargne bas pèse de moins en moins, et plus du tout à 67 ans.</li>
               <li><strong>Quand vous puisez dans votre épargne, à partir de 60&nbsp;ans ou si vous vivez de votre patrimoine</strong>&nbsp;: dès que vos réserves couvrent 40&nbsp;% de l'horizon, un taux d'épargne bas pèse de moins en moins, et plus du tout quand elles couvrent tout l'horizon (progressivement, au-delà de l'écart toléré). La règle s'installe de 55 à 60&nbsp;ans&nbsp;; avant, un retrait sur l'épargne ne neutralise pas le taux d'épargne.</li>
               <li><strong>Sans revenu</strong>&nbsp;: le taux d'épargne vaut 0 (sauf statut qui le neutralise) et il n'y a pas d'écart toléré&nbsp;: tout écart compte.</li>
-              <li><strong>Couple</strong>&nbsp;: les montants sont ceux du foyer. Le second revenu ajoute 16 (revenu proche du vôtre), 9 (revenu plus faible ou partiel) ou 0 (aucun) à la sécurité du revenu.</li>
+              <li><strong>Couple</strong>&nbsp;: les montants sont ceux du foyer. Le patrimoine est ramené à 1,5 part avant d'être comparé aux ménages de votre âge (une personne seule&nbsp;: 1 part). Le second revenu ajoute 16 (revenu proche du vôtre), 9 (revenu plus faible ou partiel) ou 0 (aucun) à la sécurité du revenu.</li>
               <li><strong>Propriétaire qui rembourse un crédit</strong>&nbsp;: la mensualité compte une seule fois, dans le poids du logement. Le capital remboursé compte dans le taux d'épargne, comme pour l'INSEE, jamais dans l'épargne de sécurité.</li>
             </ul>
           </div>
@@ -1137,10 +1146,10 @@
             <p>Le score est une photographie de ce que vous déclarez. Voici ses angles morts, à garder en tête avant d'en tirer des conclusions.</p>
             <ul>
               <li><strong>Les enfants et les personnes à charge</strong>&nbsp;: seuls «&nbsp;seul&nbsp;» et «&nbsp;couple&nbsp;» sont distingués.</li>
-              <li><strong>Les loyers que vous percevez</strong>&nbsp;: l'endettement compte vos mensualités de crédit locatif en entier, sans les loyers qui les financent (une banque en retient environ 70&nbsp;%).</li>
+              <li><strong>Les charges de vos biens locatifs</strong>&nbsp;: les loyers sont retenus à 70&nbsp;%, comme le font les banques, sans calcul de vos charges, taxes et vacance réelles.</li>
               <li><strong>Les revenus irréguliers</strong>&nbsp;: un seul mois est pris en compte. Indépendant, saisissez une moyenne sur douze mois.</li>
-              <li><strong>Les crédits sans bien en face</strong> (prêt personnel, renouvelable)&nbsp;: leurs mensualités comptent, mais le capital restant dû n'est pas retiré du patrimoine.</li>
-              <li><strong>La composition du foyer dans la comparaison INSEE</strong>&nbsp;: une personne seule est comparée à l'ensemble des ménages de son âge, couples compris. Et l'INSEE classe un ménage selon l'âge de la personne qui apporte le plus de revenus.</li>
+              <li><strong>Les crédits sans bien en face</strong> (prêt personnel, renouvelable, prêt étudiant)&nbsp;: leur capital restant dû n'est retiré du patrimoine que si vous l'indiquez à l'étape Patrimoine.</li>
+              <li><strong>Les enfants dans la comparaison de patrimoine</strong>&nbsp;: seuls les adultes comptent dans les parts (1 ou 1,5), chez vous comme dans la référence. Et l'INSEE classe un ménage selon l'âge de la personne qui apporte le plus de revenus.</li>
               <li><strong>La qualité de vos placements et de vos contrats</strong>&nbsp;: risque, frais, performance, montants garantis. Seule leur présence compte.</li>
               <li><strong>Votre future retraite</strong>&nbsp;: la pension attendue et vos droits ne sont pas estimés.</li>
               <li><strong>L'impôt</strong>&nbsp;: le revenu demandé est après impôt sur le revenu, et la fiscalité de vos placements n'est pas regardée.</li>
@@ -1155,27 +1164,30 @@
         <details class="mric-more">
           <summary>Le repère de patrimoine (INSEE)</summary>
           <div class="mric-more-body">
-            <p>Le patrimoine net de chaque tranche d'âge vient de l'enquête Histoire de vie et Patrimoine 2020-2021 de l'INSEE (Revenus et patrimoine des ménages, édition 2024, fiche 26, tableau complémentaire 2)&nbsp;: c'est la dernière série publiée par âge en patrimoine net. MoneyRadar l'actualise à début 2024 en appliquant à chaque décile l'évolution du patrimoine brut de la même tranche d'âge entre 2021 et 2024 (même fiche, figure 2a, et Insee Focus n° 371, figure 3a). Repères obtenus, arrondis à la centaine (1<sup>er</sup> décile, médiane, 9<sup>e</sup> décile)&nbsp;:</p>
+            <p>Le patrimoine net de chaque tranche d'âge vient de l'enquête Histoire de vie et Patrimoine 2023-2024 de l'INSEE (Insee Résultats «&nbsp;Patrimoine et endettement des ménages en 2024&nbsp;»), qui publie les neuf déciles du patrimoine net des ménages début 2024 selon l'âge de la personne de référence. Repères (1<sup>er</sup> décile, médiane, 9<sup>e</sup> décile)&nbsp;:</p>
             <ul>
-              <li>Moins de 30 ans&nbsp;: 2&nbsp;100&nbsp;€, 20&nbsp;200&nbsp;€, 136&nbsp;900&nbsp;€</li>
-              <li>30 à 39 ans&nbsp;: 2&nbsp;300&nbsp;€, 61&nbsp;400&nbsp;€, 367&nbsp;900&nbsp;€</li>
-              <li>40 à 49 ans&nbsp;: 3&nbsp;900&nbsp;€, 122&nbsp;900&nbsp;€, 646&nbsp;600&nbsp;€</li>
-              <li>50 à 59 ans&nbsp;: 5&nbsp;900&nbsp;€, 202&nbsp;000&nbsp;€, 911&nbsp;000&nbsp;€</li>
-              <li>60 à 69 ans&nbsp;: 3&nbsp;400&nbsp;€, 225&nbsp;400&nbsp;€, 978&nbsp;600&nbsp;€</li>
-              <li>70 ans et plus&nbsp;: 7&nbsp;600&nbsp;€, 245&nbsp;700&nbsp;€, 900&nbsp;000&nbsp;€</li>
+              <li>Moins de 30 ans&nbsp;: 2&nbsp;200&nbsp;€, 23&nbsp;100&nbsp;€, 173&nbsp;700&nbsp;€</li>
+              <li>30 à 39 ans&nbsp;: 4&nbsp;200&nbsp;€, 65&nbsp;700&nbsp;€, 423&nbsp;800&nbsp;€</li>
+              <li>40 à 49 ans&nbsp;: 4&nbsp;400&nbsp;€, 130&nbsp;800&nbsp;€, 623&nbsp;600&nbsp;€</li>
+              <li>50 à 59 ans&nbsp;: 6&nbsp;200&nbsp;€, 205&nbsp;900&nbsp;€, 900&nbsp;600&nbsp;€</li>
+              <li>60 à 69 ans&nbsp;: 3&nbsp;400&nbsp;€, 229&nbsp;300&nbsp;€, 992&nbsp;500&nbsp;€</li>
+              <li>70 ans et plus&nbsp;: 7&nbsp;800&nbsp;€, 245&nbsp;600&nbsp;€, 893&nbsp;800&nbsp;€</li>
             </ul>
-            <p>Chaque tranche est placée au milieu de son intervalle (25, 35… 75 ans) et les repères sont interpolés entre deux tranches&nbsp;; avant 25 ans, la première tranche s'applique, après 75 ans la dernière. Votre rang suit une loi log-normale qui passe exactement par ces trois repères, entre 0,5 et 99,9&nbsp;%&nbsp;; un patrimoine nul ou négatif est classé à 0,5&nbsp;%. C'est une estimation&nbsp;: l'INSEE ne publie que ces trois points par âge.</p>
+            <p>Chaque tranche est placée au milieu de son intervalle (25, 35… 75 ans) et les déciles sont interpolés entre deux tranches&nbsp;; avant 25 ans, la première tranche s'applique, après 75 ans la dernière. Entre deux déciles, l'interpolation se fait en logarithme&nbsp;; sous le 1<sup>er</sup> décile, la progression est linéaire depuis 0&nbsp;€, et au-delà du 9<sup>e</sup>, le modèle suit une loi log-normale. Réunies, les tranches d'âge retrouvent les seuils nationaux publiés par l'INSEE à un peu plus d'un point de rang près. Votre rang est compris entre 0,5 et 99,9&nbsp;%&nbsp;; un patrimoine nul ou négatif est classé à 0,5&nbsp;%.</p>
+            <p><strong>À niveau de vie égal.</strong> L'INSEE publie le patrimoine par ménage&nbsp;: un couple et une personne seule comptent chacun pour un ménage. Pour les comparer sur la même base, chaque patrimoine est divisé par le nombre de parts du foyer, 1 pour le premier adulte, 0,5 pour le second, comme l'INSEE le fait pour le niveau de vie. Votre patrimoine par part est comparé à celui des ménages de votre âge, ramenés de la même façon grâce à la part des ménages d'un seul adulte (personne seule ou famille monoparentale) publiée par le recensement 2022&nbsp;: de 43&nbsp;% vers 40-55 ans à 60&nbsp;% chez les moins de 30 ans. Une personne seule avec 80&nbsp;000&nbsp;€ et un couple avec 120&nbsp;000&nbsp;€ ont ainsi le même rang.</p>
+            <p><strong>Limites</strong>&nbsp;: l'INSEE ne publie pas le patrimoine par âge selon le type de ménage. Nous supposons qu'à âge égal, il se répartit de la même façon chez les ménages d'un adulte et chez les autres&nbsp;; l'écart réel peut décaler le rang de 3 à 8 points selon l'âge et le niveau de patrimoine. Pour le patrimoine, l'INSEE publie ses chiffres par ménage&nbsp;: la comparaison au niveau de vie est un choix de MoneyRadar, pour que seul(e) et en couple soient mesurés sur la même base.</p>
           </div>
         </details>
         <details class="mric-more">
           <summary>Sources, version et mises à jour</summary>
           <div class="mric-more-body">
             <ul>
-              <li>INSEE, <a href="https://www.insee.fr/fr/statistiques/7941421" target="_blank" rel="noopener">Revenus et patrimoine des ménages, édition 2024, fiche 26 «&nbsp;Patrimoine&nbsp;»</a>, 17 octobre 2024.</li>
+              <li>INSEE, <a href="https://www.insee.fr/fr/statistiques/8736842" target="_blank" rel="noopener">Insee Résultats «&nbsp;Patrimoine et endettement des ménages en 2024&nbsp;»</a>, tableau «&nbsp;Montants moyen et médian de patrimoine brut et net&nbsp;», selon l'âge.</li>
+              <li>INSEE, <a href="https://www.insee.fr/fr/statistiques/8569236?sommaire=8583023&amp;geo=FE-1" target="_blank" rel="noopener">recensement 2022, tableau MEN5 «&nbsp;Ménages par type de ménage et âge de la personne de référence&nbsp;»</a>.</li>
               <li>INSEE, <a href="https://www.insee.fr/fr/statistiques/8672665" target="_blank" rel="noopener">Insee Focus n° 371, «&nbsp;Les montants de patrimoine détenus par les ménages en 2024&nbsp;»</a>, 9 décembre 2025.</li>
               <li>Haut Conseil de stabilité financière, décision D-HCSF-2021-7&nbsp;: pour un crédit immobilier, mensualités plafonnées à 35&nbsp;% des revenus avant impôt, assurance comprise. Le score raisonne, lui, après impôt.</li>
               <li>Repères usuels, non officiels&nbsp;: épargne de sécurité de 3 à 6 mois de dépenses, taux d'épargne de 15 à 20&nbsp;%, taux d'effort logement de 33&nbsp;% au plus.</li>
-              <li>Version de la méthode&nbsp;: octobre 2026, dernière révision le 9 octobre 2026.</li>
+              <li>Version de la méthode&nbsp;: octobre 2026, dernière révision le 12 octobre 2026.</li>
             </ul>
           </div>
         </details>
@@ -1194,7 +1206,7 @@
         </details>
         <details>
           <summary>D'où viennent les repères du score&nbsp;?</summary>
-          <div class="fans">Des statistiques publiques et des repères usuels&nbsp;: la distribution du patrimoine net par tranche d'âge (INSEE, enquête Histoire de vie et Patrimoine 2020-2021, actualisée par MoneyRadar à début 2024), un taux d'effort logement de 33&nbsp;% au plus, repère de confort usuel (pour un crédit immobilier, le Haut Conseil de stabilité financière plafonne l'ensemble des mensualités à 35&nbsp;% des revenus avant impôt, assurance comprise&nbsp;; le score raisonne, lui, après impôt), et les bonnes pratiques reconnues en gestion de budget (matelas de 3 à 6 mois, taux d'épargne de 15 à 20&nbsp;%, capital immobilier remboursé compris comme dans le taux d'épargne des ménages de l'INSEE, diversification, prévoyance).</div>
+          <div class="fans">Des statistiques publiques et des repères usuels&nbsp;: la distribution du patrimoine net par tranche d'âge (INSEE, enquête Histoire de vie et Patrimoine 2023-2024, déciles par âge début 2024), un taux d'effort logement de 33&nbsp;% au plus, repère de confort usuel (pour un crédit immobilier, le Haut Conseil de stabilité financière plafonne l'ensemble des mensualités à 35&nbsp;% des revenus avant impôt, assurance comprise&nbsp;; le score raisonne, lui, après impôt), et les bonnes pratiques reconnues en gestion de budget (matelas de 3 à 6 mois, taux d'épargne de 15 à 20&nbsp;%, capital immobilier remboursé compris comme dans le taux d'épargne des ménages de l'INSEE, diversification, prévoyance).</div>
         </details>
         <details>
           <summary>Un score faible veut-il dire que je gère mal&nbsp;?</summary>
@@ -1253,36 +1265,86 @@
   }
   function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
 
-  // ---- patrimoine : rang parmi les ménages de même âge ----
-  // INSEE, enquête Histoire de vie et Patrimoine 2020-2021, patrimoine NET début 2021 par âge de la personne de référence
-  // (Revenus et patrimoine des ménages, édition 2024, fiche 26, tableau complémentaire 2) : [1er décile, médiane, 9e décile],
-  // placés au milieu de chaque tranche (<30 → 25 ans, 70+ → 75 ans). C'est la dernière série publiée par âge en patrimoine net.
-  // Actualisé par MoneyRadar à début 2024 : chaque décile est multiplié par l'évolution 2021-2024 du même décile de patrimoine
-  // BRUT de la même tranche d'âge (RPM2024-F26 figure 2a, Insee Focus n° 371 figure 3a) : la médiane nette reste sous la brute 2024.
-  var AGE_TBL={25:[2077,20215,136884],35:[2291,61414,367930],45:[3931,122908,646614],55:[5898,202035,911021],65:[3442,225425,978598],75:[7577,245727,900015]};
-  function ageRef(age){
-    age=clamp(age,25,75);
-    var lo=25+Math.floor((age-25)/10)*10; if(lo>75)lo=75;
-    var hi=Math.min(lo+10,75);
-    var a=AGE_TBL[lo],b=AGE_TBL[hi],t=lo===hi?0:(age-lo)/10;
-    function v(i){return a[i]+(b[i]-a[i])*t;}
-    return{d1:v(0),m:v(1),p90:v(2)};
-  }
+  // ---- patrimoine : rang parmi les ménages de même âge (déciles INSEE début 2024, modèle partagé plus bas : refAge) ----
   function normCDF(z){
     var t=1/(1+0.2316419*Math.abs(z));
     var d=0.3989423*Math.exp(-z*z/2);
     var p=d*t*(0.3193815+t*(-0.3565638+t*(1.781478+t*(-1.821256+t*1.330274))));
     return z>0?1-p:p;
   }
-  // loi log-normale à deux pentes : elle passe exactement par le 1er décile, la médiane et le 9e décile de l'âge
-  function patrimoinePercentile(patri,age){
-    var r=ageRef(age);
-    if(patri<=0)return 0.5;
-    var x=Math.log(patri),mu=Math.log(r.m);
-    var sigma=(x<mu?mu-Math.log(r.d1):Math.log(r.p90)-mu)/1.281552;
-    if(!(sigma>0))sigma=1;
-    return clamp(normCDF((x-mu)/sigma)*100,0.5,99.9);
+  /* ---- Rang de patrimoine dans une tranche d'âge : modèle partagé (score financier et « Riche pour votre âge ») ----
+     INSEE, enquête Histoire de vie et Patrimoine 2023-2024 : les neuf déciles du patrimoine NET début 2024 selon l'âge de la
+     personne de référence du ménage (Insee Résultats « Patrimoine et endettement des ménages en 2024 », fichier
+     hvp_mtmoymed_patbrut_patnet.xlsx, onglet AGE ; copie dans _insee-patrimoine/sources/). Chaque tranche est placée en son
+     milieu (moins de 30 ans → 25 ans, 70 ans ou plus → 75 ans) ; entre deux tranches, les déciles sont interpolés en ligne
+     droite ; avant 25 ans la première tranche s'applique, après 75 ans la dernière.
+     Entre deux déciles : interpolation en logarithme. Sous le 1er décile : ligne droite depuis 0 €. Au-delà du 9e décile :
+     loi log-normale passant par la médiane et le 9e décile de l'âge, vérifiée sur le 95e et le 99e centile nationaux
+     (_insee-patrimoine/verifier_modele.js). Un patrimoine nul ou négatif est classé à 0,5 %. */
+  var DECILES_PATRI={
+    25:[2200,5900,11400,15400,23100,31000,46800,75000,173700],
+    35:[4200,8500,15700,34700,65700,107100,160700,237200,423800],
+    45:[4400,11900,29800,75000,130800,197200,270800,401500,623600],
+    55:[6200,23000,58200,139300,205900,287700,395600,558000,900600],
+    65:[3400,18000,51000,139500,229300,317200,432300,606700,992500],
+    75:[7800,40900,113600,179600,245600,324100,427500,588500,893800]};
+  /* déciles du patrimoine net à un âge donné : r.dec (9 valeurs), r.d1, r.m (médiane), r.p90 */
+  function refAge(age){
+    age=Math.max(25,Math.min(75,age));
+    var lo=25+Math.floor((age-25)/10)*10;if(lo>75)lo=75;
+    var hi=Math.min(lo+10,75),a=DECILES_PATRI[lo],b=DECILES_PATRI[hi],t=lo===hi?0:(age-lo)/10;
+    var dec=a.map(function(v,i){return v+(b[i]-v)*t;});
+    return {dec:dec,d1:dec[0],m:dec[4],p90:dec[8]};
   }
+  function sigmaHautAge(r){return (Math.log(r.p90)-Math.log(r.m))/1.281552;}
+  /* part des ménages de l'âge (en %) dont le patrimoine net est inférieur à x */
+  function rangDansAge(x,r){
+    if(!(x>0))return 0.5;
+    if(x<r.d1)return 0.5+9.5*x/r.d1;
+    if(x>=r.p90)return Math.min(99.9,Math.max(90,normCDF((Math.log(x)-Math.log(r.m))/sigmaHautAge(r))*100));
+    for(var i=1;i<9;i++)if(x<=r.dec[i])return 10*i+10*Math.log(x/r.dec[i-1])/Math.log(r.dec[i]/r.dec[i-1]);
+    return 90;
+  }
+  /* patrimoine net correspondant à un rang q (en %) : l'inverse exact de rangDansAge */
+  function seuilDansAge(q,r){
+    if(q<=0.5)return 0;
+    if(q<=10)return r.d1*(q-0.5)/9.5;
+    if(q<=90){var j=Math.min(7,Math.floor((q-10)/10));return r.dec[j]*Math.pow(r.dec[j+1]/r.dec[j],(q-10-10*j)/10);}
+    var lo=1.281552,hi=6;
+    for(var i=0;i<80;i++){var mid=(lo+hi)/2;if(normCDF(mid)*100<q)lo=mid;else hi=mid;}
+    return Math.max(r.p90,Math.exp(Math.log(r.m)+(lo+hi)/2*sigmaHautAge(r)));
+  }
+  /* ---- Niveau de vie : patrimoine ramené aux parts du foyer ----
+     Parts : 1 pour le premier adulte, 0,5 pour le second (échelle de l'INSEE pour le niveau de vie, adultes seulement :
+     les enfants ne sont comptés ni chez vous ni dans la référence). Une personne seule ou un parent seul compte 1 part, un couple 1,5.
+     Référence : les ménages de votre âge, chacun ramené à ses parts. Part des ménages d'un seul adulte (personne seule ou
+     famille monoparentale) selon l'âge de la personne de référence : INSEE, recensement 2022, tableau MEN5 (copie dans
+     _insee-patrimoine/sources/), ramenée aux tranches de l'enquête Patrimoine en supposant les âges répartis uniformément
+     dans chaque tranche du recensement (calcul : _insee-patrimoine/niveau_de_vie.js).
+     Hypothèse : à âge égal, le patrimoine des ménages d'un adulte et celui des autres ménages sont répartis de la même façon,
+     l'INSEE ne publiant pas ce croisement. Les écarts réels décalent le rang de quelques points (voir niveau_de_vie.js). */
+  var UN_ADULTE={25:0.595,35:0.464,45:0.431,55:0.436,65:0.456,75:0.545};
+  function partUnAdulte(age){
+    age=Math.max(25,Math.min(75,age));
+    var lo=25+Math.floor((age-25)/10)*10;if(lo>75)lo=75;
+    var hi=Math.min(lo+10,75),t=lo===hi?0:(age-lo)/10;
+    return UN_ADULTE[lo]+(UN_ADULTE[hi]-UN_ADULTE[lo])*t;
+  }
+  /* part des ménages de l'âge (en %) dont le patrimoine par part est inférieur à celui d'un foyer de « parts » parts possédant W */
+  function rangNiveauVie(W,parts,age){
+    if(!(W>0))return 0.5;
+    var r=refAge(age),s=partUnAdulte(age),x=W/parts;
+    return s*rangDansAge(x,r)+(1-s)*rangDansAge(1.5*x,r);
+  }
+  /* patrimoine du foyer (à « parts » parts) correspondant au rang q : l'inverse de rangNiveauVie */
+  function seuilNiveauVie(q,parts,age){
+    if(q<=0.5)return 0;
+    var r=refAge(age),s=partUnAdulte(age),lo=0,hi=Math.log(1e10);
+    for(var i=0;i<90;i++){var mid=(lo+hi)/2,x=Math.exp(mid);if(s*rangDansAge(x,r)+(1-s)*rangDansAge(1.5*x,r)<q)lo=mid;else hi=mid;}
+    return parts*Math.exp((lo+hi)/2);
+  }
+  function partsFoyer(){return foyer==='couple'?1.5:1;}
+  function patrimoinePercentile(patri,age){return clamp(rangNiveauVie(patri,partsFoyer(),age),0.5,99.9);}
 
   // ---- pilier metadata ----
   var META={
@@ -1365,7 +1427,7 @@
     for(var k in raw){var p=sum>0?raw[k]/sum*100:0;pct[k]=p;vals.push(p);}
     return {pct:pct,vals:vals,sum:sum};
   }
-  function patrimoineNet(){return num('alloc-cash')+num('alloc-oblig')+num('alloc-actions')+num('alloc-immo')+num('alloc-autres')+num('alloc-biens');}
+  function patrimoineNet(){return num('alloc-cash')+num('alloc-oblig')+num('alloc-actions')+num('alloc-immo')+num('alloc-autres')+num('alloc-biens')-num('dette-sans-bien');}
   function updateAllocTotal(){
     var a=allocPercents();
     allocTotalEl.innerHTML='Patrimoine net : <b>'+fmtEuro(patrimoineNet())+'</b>';
@@ -1383,8 +1445,10 @@
     if(!(age>=18&&age<=110))alertes.push('indiquez votre âge (entre 18 et 110 ans)&nbsp;: il sert à vous comparer aux ménages de votre âge.');
     if(revenu<=0&&depenses<=0)alertes.push('renseignez votre revenu et vos dépenses&nbsp;: sans eux, le score n\'a pas de sens.');
     // le crédit conso est une sous-ligne des autres crédits
-    var consoSaisi=num('conso');
-    if(consoSaisi>credits){alertes.push('le crédit conso fait partie des autres crédits&nbsp;: le score retient '+fmtEuro(consoSaisi)+' d\'autres crédits.');credits=consoSaisi;}
+    var consoSaisi=num('conso'),locSaisi=num('credit-locatif');
+    if(consoSaisi+locSaisi>credits){alertes.push((locSaisi>0?(consoSaisi>0?'le crédit conso et le crédit locatif font':'le crédit locatif fait'):'le crédit conso fait')+' partie des autres crédits&nbsp;: le score retient '+fmtEuro(consoSaisi+locSaisi)+' d\'autres crédits.');credits=consoSaisi+locSaisi;}
+    // les loyers perçus sont une sous-ligne du revenu net
+    if(num('loyers')>revenu&&revenu>0)alertes.push('vos loyers perçus font partie de votre revenu net&nbsp;: le score retient '+fmtEuro(revenu)+' de loyers.');
     // le logement et les crédits font partie des dépenses totales
     var fixes=num('logement')+credits;
     if(depenses<fixes){alertes.push('vos dépenses totales ('+fmtEuro(depenses)+') sont inférieures à votre logement et vos crédits ('+fmtEuro(fixes)+'), qui en font partie&nbsp;: le score retient '+fmtEuro(fixes)+'.');depenses=fixes;}
@@ -1453,20 +1517,32 @@
         meta:capitalImmo>0&&revenu>0?'Dont <b>'+Math.round(capitalImmo/revenu*100)+' %</b> de capital immo remboursé':'Bon niveau : <b>15 à 20 %</b> mis de côté'};
     }
 
-    // 3. patrimoine net vs âge — comparaison foyer à foyer (médiane INSEE par ménage, sans normalisation)
+    // 3. patrimoine net vs âge — au niveau de vie : 1 part pour une personne seule, 1,5 pour un couple (modèle partagé)
     var pct=patrimoinePercentile(patrimoine,age);
     P._patriRang=pct;
-    var ref=ageRef(age);
+    var medNv=seuilNiveauVie(50,partsFoyer(),age);
     P.patri={note:lerp(pct,[[0,0],[10,15],[25,35],[50,60],[75,80],[90,92],[99,100]]),
-      val:'Devant '+Math.round(pct)+' % des ménages de votre âge',meta:'Médiane des ménages de votre âge : <b>environ '+fmtEuro(Math.round(ref.m/1000)*1000)+'</b> (INSEE 2021, actualisée 2024)'};
+      val:'Devant '+Math.round(pct)+' % des ménages de votre âge',meta:'Médiane à niveau de vie égal, '+(foyer==='couple'?'pour un couple':'pour une personne seule')+' : <b>environ '+fmtEuro(Math.round(medNv/1000)*1000)+'</b> (INSEE, début 2024)'};
 
     // 4. endettement hors résidence principale (le crédit du logement est noté dans le pilier 5) ; conso pondéré ×1,8
     var conso=clamp(num('conso'),0,credits);
     var endettReel=revenu>0?credits/revenu*100:0;
     var endettPond=revenu>0?(credits+0.8*conso)/revenu*100:0;
+    // loyers perçus (compris dans le revenu) : méthode différentielle des banques, 70 % des loyers déduits du crédit locatif ;
+    // le reste à charge s'ajoute aux autres crédits, rapportés au revenu hors loyers ; un excédent compte comme un revenu.
+    // On garde le meilleur des deux calculs : déclarer ses loyers ne fait jamais baisser la note.
+    var locatif=clamp(num('credit-locatif'),0,credits-conso),loyers=clamp(num('loyers'),0,Math.max(0,revenu)),endettLoyers=false;
+    if(locatif>0&&loyers>0){
+      var locNet=locatif-0.7*loyers,denD=revenu-loyers+Math.max(0,-locNet),horsLoc=credits-conso-locatif;
+      if(denD>0){
+        var pondD=(horsLoc+1.8*conso+Math.max(0,locNet))/denD*100;
+        if(pondD<endettPond){endettPond=pondD;endettReel=(horsLoc+conso+Math.max(0,locNet))/denD*100;endettLoyers=true;}
+      }
+    }
+    P._endettLoyers=endettLoyers;
     P.endett={note:revenu<=0?(credits>0?0:100):lerp(endettPond,[[0,100],[5,92],[10,80],[15,65],[20,50],[25,35],[30,20],[40,0]]),
       val:Math.round(endettReel)+' % du revenu',
-      meta:conso>0?'Hors logement · <b>conso compté ×1,8</b>':'Crédits hors logement : <b>≤ 10 %</b> conseillé'};
+      meta:endettLoyers?'Loyers déduits à <b>70 %</b> du crédit locatif'+(conso>0?' · conso ×1,8':''):(conso>0?'Hors logement · <b>conso compté ×1,8</b>':'Crédits hors logement : <b>≤ 10 %</b> conseillé')};
 
     // 5. poids du logement (taux d'effort)
     var logement=num('logement');
@@ -1600,7 +1676,7 @@
         if(statutVal()==='precaire')return{t:'Préservez votre épargne de précaution',d:'Pendant une recherche d\'emploi, l\'objectif n\'est pas d\'investir mais de garder une réserve disponible sur un livret. La construction de patrimoine reprendra avec votre prochain revenu.'};
         return{t:'Accélérez la construction de patrimoine',d:(P._patriRang<50?'Votre patrimoine est sous la médiane des ménages de votre âge. ':'')+'Une fois votre épargne de sécurité constituée, investir chaque mois, même une petite somme (par exemple via un PEA ou une assurance vie), fait progresser votre rang au fil des années'+(num('age')<45?'&nbsp;: plus tôt vous commencez, plus les intérêts composés travaillent.':'.')};
       case 'endett':
-        var dd='Vos crédits hors logement pèsent sur votre capacité d\'épargne et d\'emprunt. '+(num('conso')>0?'Soldez en priorité le crédit conso ou renouvelable, le plus coûteux, puis renégociez le reste plutôt que de l\'allonger, ce qui en augmenterait le coût total.':'Évitez d\'en ajouter et renégociez plutôt que d\'allonger la durée. Si une partie finance un bien locatif, les loyers perçus en compensent une partie&nbsp;: ce pilier ne les prend pas en compte.');
+        var dd='Vos crédits hors logement pèsent sur votre capacité d\'épargne et d\'emprunt. '+(num('conso')>0?'Soldez en priorité le crédit conso ou renouvelable, le plus coûteux, puis renégociez le reste plutôt que de l\'allonger, ce qui en augmenterait le coût total.':'Évitez d\'en ajouter et renégociez plutôt que d\'allonger la durée.'+(P._endettLoyers||num('loyers')>0?'':' Si une partie finance un bien locatif, indiquez votre crédit locatif et vos loyers perçus&nbsp;: 70&nbsp;% des loyers en seront déduits, comme le font les banques.'));
         if(P.endett.note<35||P._decouvert==='souvent')dd+=' Si vos mensualités deviennent difficiles à payer, un Point conseil budget (gratuit) peut vous accompagner, et la Banque de France traite les dossiers de surendettement.';
         return{t:'Allégez votre endettement',d:dd};
       case 'logement':
@@ -1916,7 +1992,7 @@
 
     // data capture (pour futur lead magnet)
     var statutCap=document.getElementById('mric-statut');
-    window.__mricScoreData={inputs:{age:num('age'),revenu:num('revenu'),depenses:num('depenses'),epargneMois:num('epargne-mois'),capitalImmo:Math.round(P._capitalImmo||0),epargneSecu:Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig')),credits:num('credits'),conso:num('conso'),logement:num('logement'),patrimoine:patrimoineNet(),statut:(statutCap?statutCap.value:'cdi'),complement:num('complement'),decouvert:(document.getElementById('mric-decouvert')?document.getElementById('mric-decouvert').value:'jamais'),foyer:foyer,partenaire:(foyer==='couple'&&document.getElementById('mric-partenaire')?document.getElementById('mric-partenaire').value:null),alloc:{cash:Math.max(0,num('alloc-cash')),oblig:Math.max(0,num('alloc-oblig')),actions:Math.max(0,num('alloc-actions')),immo:num('alloc-immo'),autres:Math.max(0,num('alloc-autres')),biens:num('alloc-biens')},assurances:{prevoyance:chk('ass-prevoyance'),sante:chk('ass-sante'),habitation:chk('ass-habitation'),gav:chk('ass-gav'),auto:chk('ass-auto'),sansVehicule:chk('ass-novehic'),prevoyanceInconnue:chk('ass-prev-nsp')}},
+    window.__mricScoreData={inputs:{age:num('age'),revenu:num('revenu'),depenses:num('depenses'),epargneMois:num('epargne-mois'),capitalImmo:Math.round(P._capitalImmo||0),epargneSecu:Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig')),credits:num('credits'),conso:num('conso'),creditLocatif:num('credit-locatif'),loyers:num('loyers'),detteSansBien:num('dette-sans-bien'),logement:num('logement'),patrimoine:patrimoineNet(),statut:(statutCap?statutCap.value:'cdi'),complement:num('complement'),decouvert:(document.getElementById('mric-decouvert')?document.getElementById('mric-decouvert').value:'jamais'),foyer:foyer,partenaire:(foyer==='couple'&&document.getElementById('mric-partenaire')?document.getElementById('mric-partenaire').value:null),alloc:{cash:Math.max(0,num('alloc-cash')),oblig:Math.max(0,num('alloc-oblig')),actions:Math.max(0,num('alloc-actions')),immo:num('alloc-immo'),autres:Math.max(0,num('alloc-autres')),biens:num('alloc-biens')},assurances:{prevoyance:chk('ass-prevoyance'),sante:chk('ass-sante'),habitation:chk('ass-habitation'),gav:chk('ass-gav'),auto:chk('ass-auto'),sansVehicule:chk('ass-novehic'),prevoyanceInconnue:chk('ass-prev-nsp')}},
       results:{score:score,badge:b.label,incomplet:!!P._incomplet,deficit:!!P._deficit,budget:{etat:P._budget.etat,ecartMensuel:Math.round(P._budget.ecart),reserves:Math.round(P._budget.reserves),moisReserves:P._budget.annees==null?null:Math.min(600,Math.floor(P._budget.annees*12)),horizon:P._budget.horizon,ecartSoutenable:Math.round(P._budget.ecartSoutenable),leger:!!P._budget.leger},rangPatrimoine:Math.round(P._patriRang),priorites:steps.slice(),recos:RECOS.map(function(r){return {key:r.key,objectif:String(r.obj).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' '),gain:r.gain};}),scoreCible:combine,plafond:P._plafond,piliers:ORDER.reduce(function(o,k){o[k]=P[k].na?null:Math.round(P[k].note);return o;},{}),details:ORDER.reduce(function(o,k){var t=function(h){return String(h==null?'':h).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};o[k]=P[k].na?null:{val:t(P[k].val),meta:t(P[k].meta)};return o;},{})},
       meta:{calculator:'score-financier',version:'v9',timestamp:new Date().toISOString()}};
 

@@ -682,6 +682,83 @@
 }
 
 
+/* ---------- v9 · saisie en lignes guidées (19/10/2026) ---------- */
+.mric-calc.ux8 .ux-fields .mric-row:not(.mric-switch){gap:12px;padding-left:10px;padding-right:10px;border-bottom:1px solid var(--line);transition:background .2s,border-color .2s}
+.mric-calc.ux8 .ux-fields .mric-row.mric-sub:not(.mric-switch){padding-left:24px}
+.mric-calc.ux8 .ux-fields .mric-row.mric-sub.mric-sub2:not(.mric-switch){padding-left:40px}
+.mric-calc.ux8 .ux-fields .mric-row:not(.mric-switch)::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;box-sizing:border-box;border:1.5px solid #3A4560;background:transparent center/12px 12px no-repeat;transition:background-color .2s,border-color .2s,box-shadow .2s}
+.mric-calc.ux8 .ux-fields .mric-row.mric-sub:not(.mric-switch)::before{width:18px;height:18px;background-size:10px 10px}
+.mric-calc.ux8 .ux-fields .mric-row.is-done::before{border-color:var(--accent);background-color:var(--accent);background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%2304261E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>')}
+.mric-calc.ux8 .ux-fields .mric-row:not(.mric-switch):focus-within{border-bottom:1px solid transparent;border-radius:12px;background:rgba(0,245,192,.06)}
+.mric-calc.ux8 .ux-fields .mric-row:not(.mric-switch):not(.is-done):focus-within::before{border:2px solid var(--accent);box-shadow:0 0 0 4px rgba(0,245,192,.15)}
+.mric-calc.ux8 .ux-fields .mric-sub:not(.mric-switch) .mric-lbl::before{content:none}
+.mric-calc.ux8 .ux-fields .mric-sub .mric-lbl small{margin-left:0}
+.mric-calc.ux8 .ux-fields .mric-row:not(.mric-switch)>.mric-lbl{flex:1 1 auto;min-width:0}
+/* valeur soulignée */
+.mric-calc.ux8 .ux-fields .mric-val{align-items:baseline;gap:6px;padding:0 2px;border-bottom:2px solid #3A4560;transition:border-color .2s}
+.mric-calc.ux8 .ux-fields .mric-row.is-done .mric-val{border-bottom-color:#5D6880}
+.mric-calc.ux8 .ux-fields .mric-row:focus-within .mric-val{border-bottom-color:var(--accent)}
+.mric-calc.ux8 .ux-fields .mric-val input{padding:6px 0 4px}
+.mric-calc.ux8 .mric-form .ux-fields .mric-val input[placeholder="Saisir"]::placeholder{color:#3FBFA0;opacity:.9;font-weight:650}
+.mric-calc.ux8 .ux-fields .mric-val input[placeholder="Saisir"]:placeholder-shown{font-size:16px}
+/* listes déroulantes */
+.mric-calc.ux8 .ux-fields .mric-row select{padding:6px 24px 6px 2px;border-bottom:2px solid #3A4560;border-radius:0;background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%2300F5C0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>');background-position:right 2px center;transition:border-color .2s}
+.mric-calc.ux8 .ux-fields .mric-row.is-done select{border-bottom-color:#5D6880}
+.mric-calc.ux8 .ux-fields .mric-row:focus-within select{border-bottom-color:var(--accent)}
+.mric-calc.ux8 .ux-fields .mric-row.is-empty select{color:var(--accent)}
+.mric-calc.ux8 .ux-fields .mric-row select:focus-visible{outline:none}
+/* champs requis vides */
+.mric-calc.ux8 .ux-fields .mric-row.is-req.is-empty .mric-lbl::after{content:"Requis pour le score";display:block;margin-top:2px;font-size:12.5px;font-weight:600;line-height:1.3;color:#FF9F43}
+/* Seul(e) / Couple : pastilles à cocher */
+.mric-calc.ux8 .ux-fields .mric-seg{gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.mric-calc.ux8 .ux-fields .mric-seg button{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border:1.5px solid rgba(255,255,255,.22);border-radius:999px;background:transparent;color:var(--fg-3);font-weight:650;transition:border-color .2s,background .2s,color .2s}
+.mric-calc.ux8 .ux-fields .mric-seg button::before{content:"";flex:none;width:10px;height:10px;border-radius:50%;box-sizing:border-box;border:1.5px solid #5D6880}
+.mric-calc.ux8 .ux-fields .mric-seg button:hover{border-color:rgba(255,255,255,.4);color:var(--fg)}
+.mric-calc.ux8 .ux-fields .mric-seg button.mric-active{border-color:var(--accent);background:rgba(0,245,192,.10);color:#fff;font-weight:750}
+.mric-calc.ux8 .ux-fields .mric-seg button.mric-active::before{border-color:var(--accent);background:var(--accent)}
+.mric-calc.ux8 .ux-fields .mric-seg button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* compteur des réponses requises */
+.mric-calc.ux8 .sf-req{display:flex;align-items:center;gap:12px;margin:16px 0 0}
+.mric-calc.ux8 .sf-req-t{font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);white-space:nowrap}
+.mric-calc.ux8 .sf-req-bar{flex:1;height:3px;border-radius:3px;background:#273049;overflow:hidden}
+.mric-calc.ux8 .sf-req-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+.mric-calc.ux8 .ux-fields{margin-top:12px}
+/* étape Vous sur une colonne (comme la maquette B) ; Budget garde ses deux colonnes, valeurs plus étroites */
+.mric-calc.ux8 #ux-panel-0 .ux-fields{grid-template-columns:minmax(0,1fr)}
+.mric-calc.ux8 #ux-panel-0 .ux-fields .mric-row select{max-width:none}
+.mric-calc.ux8 .ux-fields .mric-val input{width:84px}
+.mric-calc.ux8 .ux-fields .mric-sub .mric-val input{width:64px}
+.mric-calc.ux8 #ux-panel-0 .ux-fields .mric-val input{width:110px}
+@container (max-width:739px){
+  .mric-calc.ux8 .sf-req{margin:0 0 6px}
+  .mric-calc.ux8 .ux-fields .mric-row:not(.mric-switch){padding-left:8px;padding-right:8px;gap:10px}
+  .mric-calc.ux8 .ux-fields .mric-row.mric-sub:not(.mric-switch){padding-left:20px}
+  .mric-calc.ux8 .ux-fields .mric-row.mric-sub.mric-sub2:not(.mric-switch){padding-left:32px}
+  .mric-calc.ux8 .ux-fields .mric-seg button{padding:0 12px}
+}
+
+/* ---------- v9 · bloc de partage (19/10/2026) ---------- */
+.mric-calc.ux8 .sf-to-plan{align-self:center;justify-content:center;min-height:40px;font-size:14px;font-weight:750}
+.mric-calc.ux8.sf-incomplet .sf-to-plan{display:none}
+.mric-calc.ux8 .sf-card-actions{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px}
+.mric-calc.ux8 .sf-card-actions .ux-card-btn{width:auto}
+.mric-calc.ux8 .sf-card-actions .ux-card-dl{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid rgba(255,255,255,.22);border-radius:12px;background:transparent;color:var(--fg);font-size:14px;font-weight:750;transition:border-color .2s,color .2s}
+.mric-calc.ux8 .sf-card-actions .ux-card-dl:hover{border-color:var(--accent);color:var(--accent)}
+.mric-calc.ux8 .sf-card-actions .ux-card-dl svg{width:17px;height:17px}
+.mric-calc.ux8 .sf-card-hint{margin:-2px 0 0;font-size:12.5px;line-height:1.45;color:var(--fg-4)}
+.mric-calc.ux8 .mric-share{display:flex;flex-direction:column;align-items:stretch;gap:10px;margin-top:6px;padding-top:16px;border-top:1px solid var(--line)}
+.mric-calc.ux8 .mric-share-lbl{margin:0;font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-3)}
+.mric-calc.ux8 .mric-share-lbl small{display:block;margin-top:3px;font-size:12.5px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--fg-4)}
+.mric-calc.ux8 .mric-share .mric-share-native,.mric-calc.ux8 .mric-share .mric-share-native.mric-has-api{display:none!important}
+.mric-calc.ux8 .mric-share-row{display:flex;flex-wrap:wrap;gap:8px}
+.mric-calc.ux8 .mric-share-row .mric-share-btn{position:relative;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;min-width:0;min-height:0;padding:0;border:1.5px solid rgba(255,255,255,.18);border-radius:50%;background:rgba(255,255,255,.03);color:var(--fg-2,#D7DEEC);cursor:pointer;transition:border-color .2s,color .2s,background .2s}
+.mric-calc.ux8 .mric-share-row .mric-share-btn:hover{border-color:var(--accent);color:var(--accent);background:rgba(0,245,192,.08)}
+.mric-calc.ux8 .mric-share-row .mric-share-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.mric-calc.ux8 .mric-share-row .mric-share-btn svg{width:18px;height:18px;fill:currentColor}
+.mric-calc.ux8 .mric-share-row .mric-share-btn--copy{flex:1 1 100%;width:auto;height:44px;gap:8px;border-radius:12px;font-size:14px;font-weight:750;color:var(--fg)}
+.mric-calc.ux8 .mric-share-row .mric-share-btn--copy svg{width:16px;height:16px}
+.mric-calc.ux8 .mric-share-toast{bottom:calc(100% + 6px);font-size:12px;padding:4px 10px}
+
 /* ---------- v9 : recommandations chiffrées ---------- */
 .mric-calc.ux8 .mric-form input::placeholder{color:var(--fg-4);opacity:.55;font-weight:500}
 .mric-calc.ux8 .mric-traj{margin:0 0 14px;padding:12px 14px;border-radius:12px;background:rgba(0,245,192,.07);border:1px solid rgba(0,245,192,.22);font-size:14px;color:var(--fg-2,#D7DEEC)}
@@ -753,12 +830,12 @@
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-age">Âge</label>
-                <div class="mric-val"><input type="text" id="mric-age" value="" placeholder="ex. 35" inputmode="numeric"><span>ans</span></div>
+                <div class="mric-val"><input type="text" id="mric-age" value="" placeholder="Saisir" inputmode="numeric"><span>ans</span></div>
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-statut">Activité principale</label>
                 <select id="mric-statut">
-                  <option value="" selected disabled>Choisissez…</option>
+                  <option value="" selected disabled>Choisir dans la liste</option>
                   <option value="fonctionnaire">Fonctionnaire</option>
                   <option value="cdi">CDI confirmé</option>
                   <option value="independant">Indépendant</option>
@@ -778,7 +855,7 @@
               <div class="sf-col">
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-revenu">Revenu net <small>après impôt · moyenne sur 12 mois si variable</small></label>
-                <div class="mric-val"><input type="text" id="mric-revenu" value="" placeholder="ex. 2 500" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-revenu" value="" placeholder="Saisir" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row mric-sub">
                 <label class="mric-lbl" for="mric-loyers">dont loyers perçus <small>biens que vous louez, si vous en avez</small></label>
@@ -786,7 +863,7 @@
               </div>
               <div class="mric-row">
                 <label class="mric-lbl" for="mric-depenses">Dépenses totales <small>logement et crédits compris</small></label>
-                <div class="mric-val"><input type="text" id="mric-depenses" value="" placeholder="ex. 2 200" inputmode="numeric"><span>€</span></div>
+                <div class="mric-val"><input type="text" id="mric-depenses" value="" placeholder="Saisir" inputmode="numeric"><span>€</span></div>
               </div>
               <div class="mric-row mric-sub">
                 <label class="mric-lbl" for="mric-logement">dont loyer ou prêt immo</label>
@@ -888,9 +965,10 @@
           <canvas id="mric-radar" aria-hidden="true"></canvas>
         </div>
         <p class="ux-example" id="ux-example">Renseignez votre situation pour obtenir votre score.</p>
-        <div class="ux-card-share" id="mric-card-share" aria-disabled="true"><div class="sf-view" role="group" aria-label="Contenu de la carte"><span class="sf-view-k">Ma carte</span><div class="sf-view-seg"><button type="button" data-v="full" aria-pressed="true">Avec le détail</button><button type="button" data-v="solo" aria-pressed="false">Score seul</button></div></div><button class="ux-card-btn" id="mric-card-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span>Partager ma carte</span></button><div class="sf-card-links"><button class="ux-card-dl" id="mric-card-dl" type="button">Télécharger l’image</button><a class="mric-to-detail" href="#mric-analyse">Mon plan d’action ↓</a></div><p class="ux-card-note" id="mric-card-note" aria-live="polite"></p></div>
+        <a class="mric-to-detail sf-to-plan" href="#mric-analyse">Voir mon plan d’action ↓</a>
+        <div class="ux-card-share" id="mric-card-share" aria-disabled="true"><div class="sf-view" role="group" aria-label="Contenu de la carte"><span class="sf-view-k">Ma carte</span><div class="sf-view-seg"><button type="button" data-v="full" aria-pressed="true">Avec le détail</button><button type="button" data-v="solo" aria-pressed="false">Score seul</button></div></div><div class="sf-card-actions"><button class="ux-card-btn" id="mric-card-btn" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg><span>Partager ma carte</span></button><button class="ux-card-dl" id="mric-card-dl" type="button" aria-label="Télécharger l’image de ma carte"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Télécharger</span></button></div><p class="sf-card-hint">L’image montre votre score et vos piliers, jamais vos montants.</p><p class="ux-card-note" id="mric-card-note" aria-live="polite"></p></div>
         <div class="mric-share mric-anim mric-anim-d4" id="mric-share">
-              <div class="mric-share-lbl">Ou le lien :</div>
+              <div class="mric-share-lbl">Ou partagez le lien<small>Le lien du calculateur, sans vos chiffres.</small></div>
               <button class="mric-share-btn mric-share-native" id="mric-share-native" type="button">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="fill:none"><path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
                 Partager
@@ -898,7 +976,7 @@
               <div class="mric-share-row" id="mric-share-row">
                 <button class="mric-share-btn mric-share-btn--copy" data-platform="copy" type="button" title="Copier le lien">
                   <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
-                  Copier
+                  Copier le lien
                   <span class="mric-share-toast" id="mric-toast">Copié !</span>
                 </button>
                 <button class="mric-share-btn" data-platform="twitter" type="button" title="Partager sur X / Twitter">
@@ -2619,4 +2697,38 @@
   Promise.all([ready(LOGO),ready(ICON)]).then(schedule);
 })();
 
+
+/* ===== v9 · saisie en lignes guidées : pastilles d'état et compteur des réponses requises (19/10/2026) ===== */
+(function(){
+ var root=document.querySelector('.mric-calc.ux8');if(!root)return;
+ var form=root.querySelector('.mric-form');if(!form)return;
+ var REQ={'mric-age':1,'mric-statut':1,'mric-revenu':1,'mric-depenses':1};
+ var rows=[].slice.call(form.querySelectorAll('.ux-fields .mric-row:not(.mric-switch)'));
+ function ctrl(r){return r.querySelector('input:not([type=hidden]):not([type=checkbox]),select');}
+ rows.forEach(function(r){var c=ctrl(r);if(c&&REQ[c.id])r.classList.add('is-req');});
+ var meters=[];
+ [0,1].forEach(function(i){
+  var g=document.getElementById('ux-panel-'+i);if(!g)return;
+  var d=g.querySelector('.ux-step-desc');if(!d)return;
+  var m=document.createElement('div');m.className='sf-req';
+  m.innerHTML='<span class="sf-req-t"></span><span class="sf-req-bar" aria-hidden="true"><i></i></span>';
+  d.after(m);meters.push({g:g,m:m});
+ });
+ function paint(){
+  rows.forEach(function(r){
+   var c=ctrl(r),done;
+   if(r.querySelector('.mric-seg'))done=true;
+   else done=!!c&&String(c.value||'').trim()!=='';
+   r.classList.toggle('is-done',done);r.classList.toggle('is-empty',!done);
+  });
+  meters.forEach(function(x){
+   var req=[].slice.call(x.g.querySelectorAll('.mric-row.is-req'));
+   var n=req.filter(function(r){return r.classList.contains('is-done');}).length,t=req.length;
+   x.m.querySelector('.sf-req-t').innerHTML=n>=t?'✓ Réponses requises complètes':'<b>'+n+'</b> réponse'+(n>1?'s':'')+' requise'+(n>1?'s':'')+' sur '+t;
+   x.m.querySelector('i').style.width=(t?Math.round(n/t*100):0)+'%';
+  });
+ }
+ form.addEventListener('input',paint);form.addEventListener('change',paint);
+ paint();
+})();
 </script>

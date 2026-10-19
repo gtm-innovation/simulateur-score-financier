@@ -985,8 +985,8 @@
         <span class="sf-cta-note"><span class="sf-d">4 étapes<br>sans inscription</span><span class="sf-m">4 étapes · Score immédiat, sans inscription</span></span>
       </div>
         </div>
-        <div class="sf-hb-card" aria-hidden="true"><div class="sf-hb-k"><span>MONEY RADAR</span><span>SCORE FINANCIER</span></div><div class="sf-hb-sc"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><small>Des bases saines, avec encore de beaux leviers.</small></div></div><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span><i></i></div><span class="sf-hb-nx">Plus que 7 pts avant Libre →</span><div class="sf-hb-pl"><div><span>Endettement</span><i style="--p:100%"></i><b>100</b></div><div><span>Sécurité</span><i style="--p:83%"></i><b>83</b></div><div class="ko"><span>Patrimoine</span><i style="--p:43%"></i><b>43</b></div></div><div class="sf-hb-ft"><span>Et vous&nbsp;? Calculez le vôtre</span><span>moneyradar.org →</span></div></div>
-        <div class="sf-hb-mini" aria-hidden="true"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span></div><span>Plus que 7 pts avant Libre →</span></div></div>
+        <div class="sf-hb-card" aria-hidden="true"><div class="sf-hb-k"><span>MONEY RADAR</span><span>SCORE FINANCIER</span></div><div class="sf-hb-sc"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><small>Des bases saines, avec encore de beaux leviers.</small></div></div><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span><i></i></div><div class="sf-hb-pl"><div><span>Endettement</span><i style="--p:100%"></i><b>100</b></div><div><span>Sécurité</span><i style="--p:83%"></i><b>83</b></div><div class="ko"><span>Patrimoine</span><i style="--p:43%"></i><b>43</b></div></div><div class="sf-hb-ft"><span>Et vous&nbsp;? Calculez le vôtre</span><span>moneyradar.org →</span></div></div>
+        <div class="sf-hb-mini" aria-hidden="true"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span></div></div></div>
       </div>
       <div class="sf-levels">
         <div class="sf-levels-head"><span>LES 5 NIVEAUX DU SCORE</span><a href="#ux-method">Voir la méthode</a></div>
@@ -2757,9 +2757,7 @@
   }
   function wrapLines(x,txt,maxw){var words=String(txt||'').split(' '),line='',lines=[];words.forEach(function(w){var t=line?line+' '+w:w;if(x.measureText(t).width>maxw&&line){lines.push(line);line=w;}else line=t;});if(line)lines.push(line);return lines;}
   function nextLabel(score,li){
-    var cap=capText();if(cap)return cap;
-    if(li>=4)return 'Niveau maximal';
-    var g=G_MINS[li+1]-score;return 'Plus que '+g+(g>1?' pts':' pt')+' avant '+G_NAMES[li+1]+' →';
+    return capText()||'';  /* 19/10 (Simon) : plus de « Plus que N pts avant X » ; la pastille n'explique qu'un plafond */
   }
   function gScale(x,P,W,sy,score,li,sh,fs){
     var tw=W-2*P,gap=8,flex=[35,20,18,16,11],unit=(tw-gap*4)/100,sx=P;
@@ -2811,8 +2809,8 @@
       gPill(x,lv[1],cx,650,84,bg,true);
       x.fillStyle='rgba(255,255,255,0.92)';x.font='500 38px '+FONT;x.textAlign='center';
       wrapLines(x,msg,860).slice(0,2).forEach(function(l,i){x.fillText(l,cx,840+i*50);});
-      gScale(x,P,W,960,score,li,22,26);
-      gChip(x,nx,cx,1068,true);
+      gScale(x,P,W,nx?960:1000,score,li,22,26);
+      if(nx)gChip(x,nx,cx,1068,true);
     }else{
       // score + niveau
       x.textAlign='left';x.fillStyle='#FFFFFF';x.font='900 264px '+FONT;
@@ -2822,30 +2820,29 @@
       gPill(x,lv[1],lx,206,60,bg,false);
       x.fillStyle='rgba(255,255,255,0.92)';x.font='500 30px '+FONT;x.textAlign='left';
       var ml=wrapLines(x,msg,W-P-lx);ml.slice(0,3).forEach(function(l,i){x.fillText(i===2&&ml.length>3?l+'…':l,lx,334+i*40);});
-      // échelle + pastille
+      // échelle (+ pastille seulement si un plafond joue)
       gScale(x,P,W,468,score,li,18,24);
-      gChip(x,nx,P,560,false);
-      // piliers en deux groupes, dans un panneau sombre
+      if(nx)gChip(x,nx,P,560,false);
+      // piliers sur deux colonnes, sans panneau : points forts à gauche, à renforcer à droite
       var NAMES=window.__mricPillarNames||{};
       var rows=Object.keys(NAMES).filter(function(k){return r.piliers[k]!=null;}).map(function(k){return [NAMES[k][0],Math.round(r.piliers[k])];}).sort(function(a,b){return b[1]-a[1];});
-      var groups=[{t:'POINTS FORTS',h:'rgba(255,255,255,0.85)',f:'#FFFFFF',v:'#FFFFFF',rows:rows.filter(function(q){return q[1]>=73;})},
-                  {t:'À RENFORCER',h:'#FFD27A',f:'#FFD27A',v:'#FFD27A',rows:rows.filter(function(q){return q[1]<73;})}].filter(function(g){return g.rows.length;});
-      var py=648,fy=H-60-96,ph=fy-30-py,tw=W-2*P;
-      x.fillStyle='rgba(10,14,24,0.30)';rr(x,P,py,tw,ph,36);x.fill();
-      var avail=ph-60-groups.length*46-(groups.length-1)*14,step=Math.min(54,avail/Math.max(1,rows.length));
-      var yy=py+30;
-      groups.forEach(function(g,gi){
-        x.textAlign='left';x.fillStyle=g.h;x.font='800 22px '+FONT;if(LS)x.letterSpacing='3px';x.fillText(g.t,P+36,yy+24);if(LS)x.letterSpacing='0px';
-        yy+=46;
-        g.rows.forEach(function(row){
-          var cy=yy+step/2,bx=P+36+300,bw=tw-72-300-80;
-          x.textAlign='left';x.fillStyle='#FFFFFF';x.font='600 30px '+FONT;x.fillText(row[0],P+36,cy+10);
-          x.fillStyle='rgba(255,255,255,0.18)';rr(x,bx,cy-7,bw,14,7);x.fill();
-          x.fillStyle=g.f;rr(x,bx,cy-7,Math.max(14,bw*row[1]/100),14,7);x.fill();
-          x.textAlign='right';x.fillStyle=g.v;x.font='850 30px '+FONT;x.fillText(String(row[1]),W-P-36,cy+10);
-          yy+=step;
+      var forts=rows.filter(function(q){return q[1]>=73;}),faibles=rows.filter(function(q){return q[1]<73;});
+      var cols=[{t:'POINTS FORTS',c:'#FFFFFF',h:'rgba(255,255,255,0.85)',rows:forts},{t:'À RENFORCER',c:'#FFD27A',h:'#FFD27A',rows:faibles}];
+      if(!faibles.length){var half=Math.ceil(forts.length/2);cols=[{t:'POINTS FORTS',c:'#FFFFFF',h:'rgba(255,255,255,0.85)',rows:forts.slice(0,half)},{t:'',c:'#FFFFFF',h:'',rows:forts.slice(half)}];}
+      else if(!forts.length){var half2=Math.ceil(faibles.length/2);cols=[{t:'À RENFORCER',c:'#FFD27A',h:'#FFD27A',rows:faibles.slice(0,half2)},{t:'',c:'#FFD27A',h:'',rows:faibles.slice(half2)}];}
+      var top=nx?660:596,bottom=H-60-96-40,gap=60,cw=(W-2*P-gap)/2;
+      var maxr=Math.max(cols[0].rows.length,cols[1].rows.length,1),step=Math.min(96,(bottom-top-58)/maxr);
+      x.fillStyle='rgba(255,255,255,0.22)';x.fillRect(P+cw+gap/2-1,top,2,bottom-top);
+      cols.forEach(function(col,ci){
+        var cx0=P+ci*(cw+gap);
+        if(col.t){x.textAlign='left';x.fillStyle=col.h;x.font='800 22px '+FONT;if(LS)x.letterSpacing='3px';x.fillText(col.t,cx0,top+22);if(LS)x.letterSpacing='0px';}
+        col.rows.forEach(function(row,ri){
+          var y=top+58+ri*step;
+          x.textAlign='left';x.fillStyle=col.c;x.font='650 30px '+FONT;x.fillText(row[0],cx0,y+28);
+          x.textAlign='right';x.font='850 32px '+FONT;x.fillText(String(row[1]),cx0+cw,y+28);
+          x.fillStyle='rgba(255,255,255,0.2)';rr(x,cx0,y+44,cw,10,5);x.fill();
+          x.fillStyle=col.c;rr(x,cx0,y+44,Math.max(10,cw*row[1]/100),10,5);x.fill();
         });
-        yy+=14;
       });
     }
     // bandeau d'appel

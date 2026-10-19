@@ -1017,6 +1017,14 @@
   .mric-calc.ux8 .mric-form .ux-navigation{background:none;border-top:0}
 }
 
+/* ---------- v9 · lot 1 du rapport (19/10/2026) ---------- */
+.mric-calc.v7 .mric-coherence.is-info{border-left-color:#3B9EFF}
+.mric-calc.v7 .mric-coherence.is-info b{color:var(--fg-2)}
+.mric-calc.ux8 .mric-coherence .mric-coh-btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mric-calc.ux8 .mric-coherence .mric-coh-btns button{font:inherit;font-size:12.5px;font-weight:700;line-height:1.2;padding:7px 13px;border-radius:999px;border:1px solid var(--line-2);background:transparent;color:var(--fg-2);cursor:pointer;text-transform:none;letter-spacing:0;box-shadow:none}
+.mric-calc.ux8 .mric-coherence .mric-coh-btns button:first-child{background:var(--accent);border-color:transparent;color:#04261E}
+.mric-calc.ux8 .mric-coherence .mric-coh-btns button:hover{filter:brightness(1.08)}
+
 /* ---------- v9 : recommandations chiffrées ---------- */
 .mric-calc.ux8 .mric-form input::placeholder{color:var(--fg-4);opacity:.55;font-weight:500}
 .mric-calc.ux8 .mric-traj{margin:0 0 14px;padding:12px 14px;border-radius:12px;background:rgba(0,245,192,.07);border:1px solid rgba(0,245,192,.22);font-size:14px;color:var(--fg-2,#D7DEEC)}
@@ -1051,7 +1059,7 @@
         <span class="sf-cta-note"><span class="sf-d">4 étapes<br>sans inscription</span><span class="sf-m">4 étapes · Score immédiat, sans inscription</span></span>
       </div>
         </div>
-        <div class="sf-hb-card" aria-hidden="true"><div class="sf-hb-k"><span>MONEY RADAR</span><span>SCORE FINANCIER</span></div><div class="sf-hb-sc"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><small>Des bases saines, avec encore de beaux leviers.</small></div></div><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span><i></i></div><div class="sf-hb-pl"><div><span>Endettement</span><i style="--p:100%"></i><b>100</b></div><div><span>Sécurité</span><i style="--p:83%"></i><b>83</b></div><div class="ko"><span>Patrimoine</span><i style="--p:43%"></i><b>43</b></div></div><div class="sf-hb-ft"><span>Et vous&nbsp;? Calculez le vôtre</span><span>moneyradar.org →</span></div></div>
+        <div class="sf-hb-card" aria-hidden="true"><div class="sf-hb-k"><span>MONEY RADAR</span><span>SCORE FINANCIER</span></div><div class="sf-hb-sc"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><small>Des bases saines, avec encore de beaux leviers.</small></div></div><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span><i></i></div><div class="sf-hb-pl"><div><span>Endettement</span><i style="--p:100%"></i><b>100</b></div><div><span>Matelas</span><i style="--p:83%"></i><b>83</b></div><div class="ko"><span>Patrimoine</span><i style="--p:43%"></i><b>43</b></div></div><div class="sf-hb-ft"><span>Et vous&nbsp;? Calculez le vôtre</span><span>moneyradar.org →</span></div></div>
         <div class="sf-hb-mini" aria-hidden="true"><span class="sf-hb-n">66</span><div class="sf-hb-lv"><span class="sf-hb-pill">Solide</span><div class="sf-hb-sg"><span style="flex:35"></span><span style="flex:20"></span><span class="on" style="flex:18"></span><span style="flex:16"></span><span style="flex:11"></span></div></div></div>
       </div>
       <div class="sf-levels">
@@ -1835,7 +1843,7 @@
     if(decouvert==='souvent')secuNote=Math.min(secuNote,10);
     P.secu={note:secuNote,
       val:mois.toFixed(1).replace('.',',')+' mois',
-      meta:decouvert==='souvent'?'<b>Découvert fréquent</b> : matelas non disponible':(decouvert==='parfois'?'Recommandé : <b>3 à 6 mois</b> · découvert occasionnel':'Recommandé : <b>3 à 6 mois</b> de dépenses')};
+      meta:decouvert==='souvent'?'<b>Découvert fréquent</b> : matelas non disponible':(statutVal()==='independant'?(decouvert==='parfois'?'Indépendant : <b>6 à 12 mois</b> recommandés · découvert occasionnel':'Recommandé pour un indépendant : <b>6 à 12 mois</b>'):(decouvert==='parfois'?'Recommandé : <b>3 à 6 mois</b> · découvert occasionnel':'Recommandé : <b>3 à 6 mois</b> de dépenses'))};
 
     // 2. taux d'épargne : épargne mise de côté + capital du prêt immobilier remboursé (définition INSEE), jamais dans le matelas.
     // Un capital supérieur à la mensualité logement est une faute de saisie : non compté.
@@ -1932,7 +1940,7 @@
     }else{
       P.divers={note:clamp(base+bonus,0,100),_wf:clamp((a.sum-10000)/10000,0,1),
         val:classes+' classe'+(classes>1?'s':'')+' d\'actifs',
-        meta:maxAlloc>60?'Concentré&nbsp;: <b>'+Math.round(maxAlloc)+'&nbsp;%</b> sur une seule classe':(classes>=3?'Bon équilibre entre classes d\'actifs':'Peu de classes d\'actifs&nbsp;: <b>'+classes+'</b>')};
+        meta:maxAlloc>60?'Concentré&nbsp;: <b>'+Math.round(maxAlloc)+'&nbsp;%</b> sur une seule classe':(classes>=3?'Équilibre entre classes respecté':'Peu de classes d\'actifs&nbsp;: <b>'+classes+'</b>')};
     }
 
     // 8. sécurité du revenu (statut = stabilité + revenus complémentaires)
@@ -2018,7 +2026,7 @@
         if(num('age')>=60||statutVal()==='retraite')return{t:'Faites travailler votre patrimoine',d:'Après 60 ans, l\'enjeu est surtout de bien placer ce que vous avez&nbsp;: garder une épargne de précaution suffisante, puis choisir des supports adaptés à votre horizon et à vos besoins de revenus.'};
         if(statutVal()==='parental')return{t:'Préservez votre épargne pendant le congé',d:'Pendant un congé parental, l\'objectif est de garder une réserve disponible&nbsp;; l\'investissement reprendra avec votre retour à l\'emploi.'};
         if(statutVal()==='precaire')return{t:'Préservez votre épargne de précaution',d:'Pendant une recherche d\'emploi, l\'objectif n\'est pas d\'investir mais de garder une réserve disponible sur un livret. La construction de patrimoine reprendra avec votre prochain revenu.'};
-        return{t:'Accélérez la construction de patrimoine',d:(P._patriRang<50?'Votre patrimoine est sous la médiane des ménages de votre âge. ':'')+'Une fois votre épargne de sécurité constituée, investir chaque mois, même une petite somme (par exemple via un PEA ou une assurance vie), fait progresser votre rang au fil des années'+(num('age')<45?'&nbsp;: plus tôt vous commencez, plus les intérêts composés travaillent.':'.')};
+        return{t:'Accélérez la construction de patrimoine',d:(P._patriRang<50?'Votre patrimoine est sous la médiane des ménages de votre âge. ':'')+(P.secu&&!P.secu.na&&P.secu.note>=75?'Votre épargne de sécurité est en place&nbsp;: investir':'Une fois votre épargne de sécurité constituée, investir')+' chaque mois, même une petite somme (par exemple via un PEA ou une assurance vie), fait progresser votre rang au fil des années'+(num('age')<45?'&nbsp;: plus tôt vous commencez, plus les intérêts composés travaillent.':'.')};
       case 'endett':
         var dd='Vos crédits hors logement pèsent sur votre capacité d\'épargne et d\'emprunt. '+(num('conso')>0?'Soldez en priorité le crédit conso ou renouvelable, le plus coûteux, puis renégociez le reste plutôt que de l\'allonger, ce qui en augmenterait le coût total.':'Évitez d\'en ajouter et renégociez plutôt que d\'allonger la durée.'+(P._endettLoyers||num('loyers')>0?'':' Si une partie finance un bien locatif, indiquez votre crédit locatif et vos loyers perçus&nbsp;: 70&nbsp;% des loyers en seront déduits, comme le font les banques.'));
         if(P.endett.note<35||P._decouvert==='souvent')dd+=' Si vos mensualités deviennent difficiles à payer, un Point conseil budget (gratuit) peut vous accompagner, et la Banque de France traite les dossiers de surendettement.';
@@ -2233,15 +2241,12 @@
     if(cohEl){
       var rev=num('revenu');
       var cohMsg='';
-      if(rev>0&&Math.abs(P._coherence)>0.15){
-        cohMsg='<b>À vérifier :</b> vos dépenses ('+fmtEuro(num('depenses'))+') et votre épargne ('+fmtEuro(num('epargne-mois'))+') font '+fmtEuro(num('depenses')+num('epargne-mois'))+' par mois, pour un revenu de '+fmtEuro(rev)+'. Le score dépend de ces montants.';
-        if(P._capitalImmo>0&&P._coherence>0.15)cohMsg+=' Le capital remboursé fait déjà partie de vos dépenses : ne le comptez pas aussi dans l\'épargne mise de côté.';
-      }
+      if(rev>0&&P._coherence<-0.15){var reste=Math.round(rev-num('depenses')-num('epargne-mois'));cohMsg='Il reste <b>'+fmtEuro(reste)+' par mois</b> après vos dépenses et votre épargne. S\'ils restent sur votre compte, ils comptent comme de l\'épargne et peuvent faire monter votre score.'+'<span class="mric-coh-btns"><button type="button" data-coh="epargne">Ajouter à mon épargne</button><button type="button" data-coh="depenses">Ce sont des dépenses</button></span>';}else if(rev>0&&P._coherence>0.05){cohMsg='<b>À vérifier :</b> vos dépenses et votre épargne dépassent votre revenu de <b>'+fmtEuro(Math.round(num('depenses')+num('epargne-mois')-rev))+' par mois</b>. Vérifiez que l\'épargne n\'est pas déjà comptée dans les dépenses, et que le revenu est bien net d\'impôt.';if(P._capitalImmo>0)cohMsg+=' Le capital remboursé fait déjà partie de vos dépenses : ne le comptez pas aussi dans l\'épargne mise de côté.';}
       if(P._capitalSaisi>P._capitalImmo){
         cohMsg+=(cohMsg?'<br>':'')+'<b>À vérifier :</b> le capital remboursé ('+fmtEuro(P._capitalSaisi)+') dépasse votre mensualité de logement ('+fmtEuro(num('logement'))+'). Seule la mensualité est comptée.';
       }
       (P._alertes||[]).forEach(function(m){cohMsg+=(cohMsg?'<br>':'')+'<b>À vérifier :</b> '+m;});
-      if(cohMsg){cohEl.innerHTML=cohMsg;cohEl.removeAttribute('hidden');}else{cohEl.setAttribute('hidden','');}
+      if(cohMsg){cohEl.innerHTML=cohMsg;cohEl.removeAttribute('hidden');cohEl.classList.toggle('is-info',cohMsg.indexOf('À vérifier')<0);}else{cohEl.setAttribute('hidden','');cohEl.classList.remove('is-info');}
     }
 
     // gauge
@@ -2319,7 +2324,7 @@
     steps.forEach(function(k,i){
       var pt=planText(k,P);
       var rc=RECOS.filter(function(x){return x.key===k;})[0];
-      var lk=(k==='maintien'||(k==='salaire'&&['etudiant','precaire'].indexOf(statutVal())>=0)||(k==='logement'&&statutVal()==='retraite'))?null:k==='budget'?(P._budget.etat==='puise_limite'?{label:'Calculateur Runway',url:'https://moneyradar.org/simulateur-runway/'}:{label:'Gérer son budget',url:'https://moneyradar.org/guides/gerer-son-budget/'}):(k==='assur'?assurLink():META[k].link);
+      var lk=(k==='maintien'||(k==='salaire'&&['etudiant','precaire'].indexOf(statutVal())>=0)||(k==='logement'&&statutVal()==='retraite'))?null:k==='budget'?(P._budget.etat==='puise_limite'?{label:'Calculateur Runway',url:'https://moneyradar.org/simulateur-runway/'}:{label:'Gérer son budget',url:'https://moneyradar.org/guides/gerer-son-budget/'}):(k==='assur'?assurLink():(k==='salaire'&&statutVal()==='independant'?{label:'Calculateur Runway',url:'https://moneyradar.org/simulateur-runway/'}:META[k].link));
       var step=document.createElement('div');
       step.className='mric-plan-step';
       step.innerHTML='<div class="mric-plan-rank">'+(i+1)+'</div><div class="mric-plan-body"><h4>'+pt.t+'</h4>'+(rc?'<div class="mric-reco"><div class="mric-reco-obj"><span class="mric-reco-k">Objectif</span>'+rc.obj+'</div><div class="mric-reco-res">'+gainHtml(rc.gain,score,rc.key)+'</div>'+(rc.delai?'<div class="mric-reco-delai">'+rc.delai+'</div>':'')+'</div>':'')+'<p>'+pt.d+'</p>'+
@@ -2337,7 +2342,7 @@
     // data capture (pour futur lead magnet)
     var statutCap=document.getElementById('mric-statut');
     window.__mricScoreData={inputs:{age:num('age'),revenu:num('revenu'),depenses:num('depenses'),epargneMois:num('epargne-mois'),capitalImmo:Math.round(P._capitalImmo||0),epargneSecu:Math.max(0,num('alloc-cash'))+Math.max(0,num('alloc-oblig')),credits:num('credits'),conso:num('conso'),creditLocatif:num('credit-locatif'),loyers:num('loyers'),detteSansBien:num('dette-sans-bien'),logement:num('logement'),patrimoine:patrimoineNet(),statut:(statutCap?statutCap.value:'cdi'),complement:num('complement'),decouvert:(document.getElementById('mric-decouvert')?document.getElementById('mric-decouvert').value:'jamais'),foyer:foyer,partenaire:(foyer==='couple'&&document.getElementById('mric-partenaire')?document.getElementById('mric-partenaire').value:null),alloc:{cash:Math.max(0,num('alloc-cash')),oblig:Math.max(0,num('alloc-oblig')),actions:Math.max(0,num('alloc-actions')),immo:num('alloc-immo'),autres:Math.max(0,num('alloc-autres')),biens:num('alloc-biens')},assurances:{prevoyance:chk('ass-prevoyance'),sante:chk('ass-sante'),habitation:chk('ass-habitation'),gav:chk('ass-gav'),auto:chk('ass-auto'),sansVehicule:chk('ass-novehic'),prevoyanceInconnue:chk('ass-prev-nsp')}},
-      results:{score:score,badge:b.label,incomplet:!!P._incomplet,deficit:!!P._deficit,budget:{etat:P._budget.etat,ecartMensuel:Math.round(P._budget.ecart),reserves:Math.round(P._budget.reserves),moisReserves:P._budget.annees==null?null:Math.min(600,Math.floor(P._budget.annees*12)),horizon:P._budget.horizon,ecartSoutenable:Math.round(P._budget.ecartSoutenable),leger:!!P._budget.leger},rangPatrimoine:Math.round(P._patriRang),priorites:steps.slice(),recos:RECOS.map(function(r){return {key:r.key,objectif:String(r.obj).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' '),gain:r.gain};}),scoreCible:combine,plafond:P._plafond,piliers:ORDER.reduce(function(o,k){o[k]=P[k].na?null:Math.round(P[k].note);return o;},{}),details:ORDER.reduce(function(o,k){var t=function(h){return String(h==null?'':h).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};o[k]=P[k].na?null:{val:t(P[k].val),meta:t(P[k].meta)};return o;},{})},
+      results:{score:score,badge:b.label,incomplet:!!P._incomplet,deficit:!!P._deficit,budget:{etat:P._budget.etat,ecartMensuel:Math.round(P._budget.ecart),reserves:Math.round(P._budget.reserves),moisReserves:P._budget.annees==null?null:Math.min(600,Math.floor(P._budget.annees*12)),horizon:P._budget.horizon,ecartSoutenable:Math.round(P._budget.ecartSoutenable),leger:!!P._budget.leger},rangPatrimoine:Math.round(P._patriRang),priorites:steps.slice(),titresPlan:steps.reduce(function(o,k){o[k]=String((planText(k,P)||{}).t||'').replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ');return o;},{}),recos:RECOS.map(function(r){return {key:r.key,objectif:String(r.obj).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' '),gain:r.gain};}),scoreCible:combine,plafond:P._plafond,piliers:ORDER.reduce(function(o,k){o[k]=P[k].na?null:Math.round(P[k].note);return o;},{}),details:ORDER.reduce(function(o,k){var t=function(h){return String(h==null?'':h).replace(/<[^>]*>/g,'').replace(/&nbsp;/g,' ').replace(/\s+/g,' ').trim();};o[k]=P[k].na?null:{val:t(P[k].val),meta:t(P[k].meta)};return o;},{})},
       meta:{calculator:'score-financier',version:'v9',timestamp:new Date().toISOString()}};
 
     resultsSection.classList.add('mric-visible');
@@ -2619,7 +2624,7 @@
  var LEVELS=[[0,'Fragile','#FF3B4E'],[35,'Stable','#FF9F43'],[55,'Solide','#3B9EFF'],[73,'Libre','#00F5C0'],[89,'Élite','#A855F7']];
  function levelIndex(s){for(var i=LEVELS.length-1;i>=0;i--)if(s>=LEVELS[i][0])return i;return 0;}
  function noteColor(n){return n>=73?'#00F5C0':n>=55?'#3B9EFF':n>=35?'#FF9F43':'#FF3B4E';}
- var NAMES={secu:['Sécurité','Sécurité'],epargne:["Taux d'épargne",'Épargne'],patri:['Patrimoine','Patrimoine'],endett:['Endettement','Endettement'],logement:['Logement','Logement'],assur:['Assurances','Assurances'],divers:['Diversification','Diversif.'],salaire:['Revenu','Revenu']};
+ var NAMES={secu:['Épargne de sécurité','Matelas'],epargne:["Taux d'épargne",'Épargne'],patri:['Patrimoine','Patrimoine'],endett:['Endettement','Endettement'],logement:['Logement','Logement'],assur:['Assurances','Assurances'],divers:['Diversification','Diversif.'],salaire:['Revenu','Revenu']};
  window.__mricPillarNames=NAMES;
  var segs=root.querySelectorAll('.sf-scale .sf-segs>span'),mark=root.querySelector('.sf-mark'),nextTxt=document.getElementById('sf-next'),bars=document.getElementById('sf-bars');
  var live=root.querySelector('.sf-live'),dateEl=root.querySelector('.sf-date'),miniBadge=document.getElementById('mric-mini-badge');
@@ -2673,6 +2678,17 @@
     +'<text class="v" x="'+p[0].toFixed(1)+'" y="'+(p[1]+dy+17).toFixed(1)+'" text-anchor="'+a+'">'+v+'</text></g>';});
   box.innerHTML=s+'</svg>';
  }
+ /* v9 lot 1 : titre de l'encart email sur la note la plus faible */
+ function sfGateTitle(r){
+  var h=document.querySelector('#mric-gate-card h3');if(!h)return;
+  if(!h.getAttribute('data-def'))h.setAttribute('data-def',h.innerHTML);
+  var G={secu:'épargne de sécurité',epargne:'taux d’épargne',patri:'patrimoine',endett:'endettement',logement:'logement',assur:'assurances',divers:'diversification',salaire:'sécurité du revenu'};
+  var mk=null;
+  if(r&&r.piliers)Object.keys(G).forEach(function(k){var v=r.piliers[k];if(v==null)return;if(mk===null||v<r.piliers[mk])mk=k;});
+  if(mk===null){h.innerHTML=h.getAttribute('data-def');return;}
+  var v=Math.round(r.piliers[mk]);
+  h.innerHTML=v<75?'Pourquoi <em>'+v+' en '+G[mk]+'</em>, et comment progresser&nbsp;?':'Votre <em>bilan détaillé</em>, pilier par pilier, et votre plan';
+ }
  function renderCard(){
   var data=window.__mricScoreData;if(!data||!data.results)return;
   var r=data.results,score=Math.round(r.score),li=levelIndex(score),lv=LEVELS[li];
@@ -2687,7 +2703,7 @@
    miniSegs.forEach(function(s){s.classList.remove('on');});miniGoal.textContent='Complétez vos réponses';
    setText(ctaScore,'votre score');
    if(nextTxt)nextTxt.innerHTML='';
-   bars.innerHTML='';sfRadar(null);
+   bars.innerHTML='';sfRadar(null);sfGateTitle(null);
    if(dateEl)dateEl.textContent=today();
    if(live&&dateEl){live.hidden=finished;dateEl.hidden=!finished;}
    afterRender();return;
@@ -2707,7 +2723,7 @@
   var barHtml=function(row){var n=NAMES[row[0]];return '<div class="sf-bar"><span><span class="sf-l">'+n[0]+'</span><span class="sf-s">'+n[1]+'</span></span><span class="sf-track"><i style="width:'+row[1]+'%;background:'+noteColor(row[1])+'"></i></span><b>'+row[1]+'</b></div>';};
   var forts=rows.filter(function(q){return q[1]>=73;}),faibles=rows.filter(function(q){return q[1]<73;});
   bars.innerHTML=(forts.length?'<div class="sf-bgrp sf-bgrp-ok">Points forts</div>'+forts.map(function(q){return barHtml(q).replace('class="sf-bar"','class="sf-bar sf-bar-ok"');}).join(''):'')+(faibles.length?'<div class="sf-bgrp sf-bgrp-ko">À renforcer</div>'+faibles.map(barHtml).join(''):'');
-  sfRadar(r);
+  sfRadar(r);sfGateTitle(r);
   if(dateEl)dateEl.textContent=today();
   if(live&&dateEl){live.hidden=finished;dateEl.hidden=!finished;}
   afterRender();
@@ -3070,4 +3086,17 @@ function paint(){var n=0;F.forEach(function(id){var d=ok(id);if(d)n++;root.query
 root.addEventListener('input',paint);root.addEventListener('change',paint);
 root.querySelectorAll('.sf-empty [data-f]').forEach(function(b){b.addEventListener('click',function(){var e=document.getElementById(b.dataset.f);if(!e)return;var g=e.closest('[id^="ux-panel-"]');var s=g&&root.querySelector('.ux-step[aria-controls="'+g.id+'"]');if(s)s.click();setTimeout(function(){e.focus();e.scrollIntoView({block:'center',behavior:'smooth'});},60);});});
 paint();})();
+
+/* v9 lot 1 : boutons de l'alerte budget (le reste du mois est de l'épargne, ou des dépenses) */
+(function(){
+  var el=document.getElementById('mric-coherence');if(!el)return;
+  function val(id){var e=document.getElementById(id);return e?(parseFloat(String(e.value).replace(/[\s  ]/g,'').replace(',','.'))||0):0;}
+  function put(id,v){var e=document.getElementById(id);if(!e)return;e.value=String(Math.round(v));e.dispatchEvent(new Event('input',{bubbles:true}));e.dispatchEvent(new Event('change',{bubbles:true}));}
+  el.addEventListener('click',function(ev){
+    var b=ev.target.closest('[data-coh]');if(!b)return;ev.preventDefault();
+    var reste=val('mric-revenu')-val('mric-depenses')-val('mric-epargne-mois');if(reste<=0)return;
+    if(b.getAttribute('data-coh')==='epargne')put('mric-epargne-mois',val('mric-epargne-mois')+reste);
+    else put('mric-depenses',val('mric-depenses')+reste);
+  });
+})();
 </script>

@@ -1469,7 +1469,8 @@
           <summary>Comment votre plan d'action est construit</summary>
           <div class="mric-more-body">
             <ul>
-              <li>Seuls les piliers notés sous 75/100 entrent dans le plan, trois étapes au plus. Si tous vos piliers notés sont à 75 ou plus, le plan vous propose de garder le cap.</li>
+              <li>Les piliers notés sous 75/100 entrent dans le plan, trois étapes au plus. Quand votre score est à 10 points ou moins du niveau suivant et que ces étapes n'y suffisent pas, le plan ajoute les leviers rapides sur des piliers déjà bons (taux d'épargne, épargne de sécurité, protections), du plus rentable au moins rentable, jusqu'à l'atteindre. Si tous vos piliers notés sont à 75 ou plus et que le niveau suivant est loin, le plan vous propose de garder le cap.</li>
+              <li>L'objectif de patrimoine tient compte de l'âge&nbsp;: le patrimoine des ménages augmente avec l'âge, donc la durée affichée compare votre patrimoine, augmenté de votre épargne mensuelle (hors rendement), au repère de l'âge que vous aurez, pas à celui d'aujourd'hui. Les points affichés supposent la somme investie en actions ou ETF, comme le conseille l'étape. Pas d'objectif de patrimoine pendant les études, une recherche d'emploi, un congé parental ou une invalidité.</li>
               <li>L'ordre suit d'abord les urgences&nbsp;: le budget s'il est en déficit ou en retrait trop rapide, puis l'endettement s'il est noté sous 50 ou si vous avez un crédit conso, puis l'épargne de sécurité si elle est notée sous 65. Viennent ensuite les piliers qui peuvent rapporter le plus de points (poids multiplié par les points manquants).</li>
               <li>En déficit ou en retrait trop rapide, le plan commence par le budget et ne vous demande ni d'épargner davantage, ni de constituer une épargne de sécurité (sauf pour sortir d'un découvert fréquent), ni d'investir. En cas de découvert fréquent, pas d'objectif d'épargne. En cas de découvert fréquent ou d'endettement noté sous 35, pas de conseil de placement. Pas de conseil de diversification non plus pendant une période sans revenu d'activité (études, recherche d'emploi, congé parental, invalidité), ni quand vous puisez dans votre épargne avant 60&nbsp;ans.</li>
               <li>Chaque étape reçoit un objectif chiffré (un montant à mettre de côté, un crédit à solder, une protection à vérifier) et les points qu'il rapporte, calculés en refaisant le calcul du score avec la situation modifiée. Un objectif sans effet sur le score n'est pas affiché, sauf pour le budget, l'endettement et l'épargne de sécurité.</li>
@@ -2201,11 +2202,18 @@
         for(var i=0;i<60;i++){var mid=(lo+hi)/2;if(patrimoinePercentile(mid,age)<cibleR)lo=mid;else hi=mid;}
         var gap=arrondi(hi-pa,1000);
         if(gap<=0)return null;
-        var epm=num('epargne-mois');if(epm<=0||gap/(12*epm)>25)return null;
-        var parts={'alloc-cash':Math.max(0,num('alloc-cash')),'alloc-oblig':Math.max(0,num('alloc-oblig')),'alloc-actions':Math.max(0,num('alloc-actions')),'alloc-autres':Math.max(0,num('alloc-autres'))},tot=0,dd={};
-        for(var q in parts)tot+=parts[q];
-        if(tot<=0)dd['alloc-actions']=gap;else for(var q2 in parts)if(parts[q2]>0)dd[q2]=gap*parts[q2]/tot;
-        return {d:dd,set:{},obj:(cibleR===50?'Rejoindre la médiane des ménages de votre âge':'Passer devant '+cibleR+'&nbsp;% des ménages de votre âge')+'&nbsp;: <b>'+fmtEuro(gap)+'</b> de patrimoine en plus.',delai:rythme(gap)?rythme(gap).replace('.',', hors rendement des placements.'):'Un objectif de long terme, porté par l\'épargne régulière.'};
+        var epm=num('epargne-mois');if(epm<=0||['etudiant','precaire','parental','invalidite'].indexOf(st)>=0)return null;
+        // v9 lot 2 : le repère monte avec l'âge, la durée se calcule contre le repère de l'âge futur (hors rendement)
+        var seuilA=function(q,a){var lo=0,hi=Math.max(pa,1)*2+100000,it=0;while(patrimoinePercentile(hi,a)<q&&it++<40)hi*=2;for(var i2=0;i2<60;i2++){var m2=(lo+hi)/2;if(patrimoinePercentile(m2,a)<q)lo=m2;else hi=m2;}return hi;};
+        var ans=null;for(var y=1;y<=25;y++){if(pa+epm*12*y>=seuilA(cibleR,age+y)){ans=y;break;}}
+        var delai;
+        if(ans!==null)delai='À votre rythme actuel ('+fmtEuro(epm)+' par mois, hors rendement), vous y seriez vers '+(age+ans)+'&nbsp;ans, en tenant compte de la hausse du patrimoine avec l\'âge.';
+        else{
+          var e10=arrondi((seuilA(cibleR,age+10)-pa)/120,10),r10=Math.round(patrimoinePercentile(pa+epm*120,age+10));
+          if(e10>Math.max(0,num('revenu'))*0.5)return null;
+          delai='Le patrimoine des ménages augmente avec l\'âge&nbsp;: pour y être dans 10&nbsp;ans, il faudrait mettre environ <b>'+fmtEuro(e10)+' par mois</b> de côté (hors rendement). À votre rythme actuel ('+fmtEuro(epm)+' par mois), vous seriez devant environ '+r10+'&nbsp;% des ménages de votre âge dans 10&nbsp;ans.';
+        }
+        return {d:{'alloc-actions':gap},set:{},obj:(cibleR===50?'Rejoindre la médiane des ménages de votre âge':'Passer devant '+cibleR+'&nbsp;% des ménages de votre âge')+'&nbsp;: il vous manque aujourd\'hui <b>'+fmtEuro(gap)+'</b>.',delai:delai};
       case 'divers':
         var al=allocPercents();if(al.sum<10000)return null;
         if(['precaire','etudiant','parental','invalidite'].indexOf(st)>=0||(P._budget.etat!=='equilibre'&&!(st==='retraite'||st==='rentier'||num('age')>=60)))return null;
@@ -2315,6 +2323,17 @@
     urgent.concat(faibles).forEach(function(k){if(recoOf[k]!==undefined)return;var r=P._incomplet?null:recoFor(k,P);if(r){r.key=k;r.gain=Math.max(0,scoreSi([r])-score);if(r.gain<1&&['budget','endett','secu'].indexOf(k)<0)r=null;}recoOf[k]=r||null;});
     var autres=faibles.filter(function(k){return urgent.indexOf(k)<0;}).sort(function(a,c){var L={logement:1,patri:1,salaire:1};var ga=(recoOf[a]?recoOf[a].gain:-1)-(L[a]?1000:0),gc=(recoOf[c]?recoOf[c].gain:-1)-(L[c]?1000:0);return gc-ga;});
     var steps=urgent.concat(autres).slice(0,3);
+    // v9 lot 2 : à 10 points ou moins du niveau suivant, leviers rapides sur des piliers déjà bons, jusqu'à l'atteindre
+    var nxt=BADGES.map(function(b){return b.min;}).filter(function(m){return m>score;}).sort(function(a,c){return a-c;})[0];
+    var plf=P._plafond||{};
+    if(nxt!=null&&nxt-score<=10&&steps.length<3&&!budgetPrio&&!plf.budget&&!plf.decouvert&&!plf.etudiant&&!P._incomplet){
+      var curR=steps.map(function(k){return recoOf[k];}).filter(Boolean);
+      var atteint=function(L){return (L.length?scoreSi(L):score)>=nxt;};
+      if(!atteint(curR)){
+        var extra=byGain.filter(function(k){return P[k].note>=75&&!excl[k]&&steps.indexOf(k)<0;}).map(function(k){var r=recoFor(k,P);if(r){r.key=k;r.gain=Math.max(0,scoreSi([r])-score);}return r&&r.gain>=1?r:null;}).filter(Boolean).sort(function(a,c){return c.gain-a.gain;});
+        for(var xi=0;xi<extra.length&&steps.length<3&&!atteint(curR);xi++){steps.push(extra[xi].key);recoOf[extra[xi].key]=extra[xi];curR.push(extra[xi]);}
+      }
+    }
     steps.forEach(function(k){if(recoOf[k])RECOS.push(recoOf[k]);});
     window.__mricRecos=RECOS;window.__mricRecoAll=recoOf;
     if(!steps.length)steps=['maintien'];
@@ -2322,7 +2341,7 @@
     var combine=RECOS.length>1?scoreSi(RECOS):null;
     if(combine!=null&&combine>score)planEl.insertAdjacentHTML('beforeend','<div class="mric-traj">En suivant ces '+RECOS.length+' actions&nbsp;: <b>'+score+'</b> → <b style="color:'+badgeFor(combine).color+'">'+combine+' · '+badgeFor(combine).label+'</b></div>');
     steps.forEach(function(k,i){
-      var pt=planText(k,P);
+      var pt=planText(k,P);if(k!=='maintien'&&P[k]&&!P[k].na&&P[k].note>=75)pt={t:pt.t,d:'<b>Déjà à '+Math.round(P[k].note)+'/100</b>, et facile à renforcer pour atteindre le niveau suivant. '+pt.d};
       var rc=RECOS.filter(function(x){return x.key===k;})[0];
       var lk=(k==='maintien'||(k==='salaire'&&['etudiant','precaire'].indexOf(statutVal())>=0)||(k==='logement'&&statutVal()==='retraite'))?null:k==='budget'?(P._budget.etat==='puise_limite'?{label:'Calculateur Runway',url:'https://moneyradar.org/simulateur-runway/'}:{label:'Gérer son budget',url:'https://moneyradar.org/guides/gerer-son-budget/'}):(k==='assur'?assurLink():(k==='salaire'&&statutVal()==='independant'?{label:'Calculateur Runway',url:'https://moneyradar.org/simulateur-runway/'}:META[k].link));
       var step=document.createElement('div');
